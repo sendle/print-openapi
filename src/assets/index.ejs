@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title><%= title %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Roboto"
+    />
+    <style>
+      <%- style %>
+    </style>
+  </head>
+  <body>
+    <div>
+      <h1><%= title %></h1>
+      <%- description %>
+    </div>
+
+    <% paths.forEach(path => { %>
+    <div>
+      <% path.operations.forEach(operation => { %>
+      <h2><%= operation.path %> : <%= operation.method %></h2>
+
+      <%- operation.description %> <% }); %>
+    </div>
+    <% }); %>
+  </body>
+</html>

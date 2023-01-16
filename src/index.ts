@@ -1,6 +1,9 @@
 import { command, run, string, positional } from 'cmd-ts';
 import { ExistingPath } from 'cmd-ts/batteries/fs';
 import OASNormalize from 'oas-normalize';
+import { writeFile } from 'fs';
+import { cwd, chdir } from 'process';
+import { dirname } from 'path';
 
 import { convertToHTML } from './lib/convertOAS';
 
@@ -11,13 +14,25 @@ async function transformOAS(openapiPath: string, htmlPath: string) {
     colorizeErrors: true,
   });
 
+  // temporarily change to folder the openapi file is in so that we can deref
+  //  all the refs in it properly
+  const oldcwd = cwd();
+  chdir(dirname(openapiPath));
+
   oasLoader
     .deref()
-    .then((definition) => {
-      // successfully dereferenced, now convert it
-      const content = convertToHTML(definition);
+    .then(async (definition) => {
+      // move back to the original working directory we were executed in
+      chdir(oldcwd);
 
-      console.log(content);
+      // successfully dereferenced, now convert it
+      const content = await convertToHTML(definition);
+
+      writeFile(htmlPath, content, (err) => {
+        if (err) {
+          console.error(err);
+        }
+      });
     })
     .catch((err) => {
       console.log(err);
