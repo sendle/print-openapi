@@ -24,6 +24,7 @@ export async function convertToHTML(
     let pathName = '';
     Object.values(path).forEach((operation) => {
       operations.push({
+        name: operation.getSummary(),
         path: operation.path,
         method: operation.method,
         description: html(operation.getDescription()),

@@ -8,20 +8,32 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css?family=Roboto"
     />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Roboto+Mono"
+    />
     <style>
       <%- style %>
     </style>
   </head>
   <body>
-    <div>
+    <div class="front-matter">
       <h1><%= title %></h1>
       <%- description %>
     </div>
 
     <% paths.forEach(path => { %>
-    <div>
+    <div class="path">
       <% path.operations.forEach(operation => { %>
-      <h2><%= operation.path %> : <%= operation.method %></h2>
+      <h2>
+        <%= operation.name %>
+        <span class="path">
+          <%= operation.path %>
+          <span class="method <%= operation.method %>"
+            ><%= operation.method %></span
+          ></span
+        >
+      </h2>
 
       <%- operation.description %> <% }); %>
     </div>

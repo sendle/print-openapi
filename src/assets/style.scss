@@ -1,5 +1,85 @@
 @use 'normalize';
 
+// variables
+$regular-font-family: Roboto, 'Segoe UI', Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+$code-font-family: 'Roboto Mono', monospace;
+
+// special print elements
+@media print {
+  @page {
+    // optimistic, doesn't seem to want to apply :shrug:
+    margin: 2cm 1.5cm;
+  }
+
+  // note, page-margin boxes aren't supported by anyone apparently.
+  // would have been nice to know that before trying to use them for
+  //  a few hours, but apparently it's not important enough to list
+  //  on something like caniuse, huh. what a shame.
+  // see also: https://drafts.csswg.org/css-page-3/#margin-boxes
+}
+
+// rest of the doc
+
 body {
-    font-family: Roboto, 'Segoe UI', Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-family: $regular-font-family;
+
+  @media screen {
+    // printed pages have left + right margins already,
+    //  so only apply this to the screen
+    padding: 0 1em;
+  }
+}
+
+body > .path {
+  @media print {
+    break-before: page;
+  }
+
+  h2 {
+    @media screen {
+      margin-top: 2em;
+    }
+    font-size: 1.6em;
+
+    .path {
+      display: block;
+      font-family: $code-font-family;
+      font-size: 0.65em;
+      font-weight: 500;
+      margin-top: 0.2em;
+      padding: 0.4em 0.5em;
+      border-radius: 0.4em 0 0 0.4em;
+      border-left: 1px solid rgb(30 28 28 / 12%);
+      border-bottom: 1px solid rgb(30 28 28 / 12%);
+      background: #eee;
+      color: #c4305b;
+
+      .method {
+        font-family: $regular-font-family;
+        text-transform: uppercase;
+        display: inline-block;
+        padding: 0.4em 0.5em;
+        font-size: .8em;
+        margin: -1em 0 -1em 0.5em;
+        position: relative;
+        top: -0.4em;
+        border-radius: 0 0 0.4em 0.4em;
+        background: #201b1b;
+        color: #fff;
+
+        &.get {
+          background-color: #107610;
+        }
+        &.post {
+          background-color: #1c1c7e;
+        }
+        &.put {
+          background-color: #6f4811;
+        }
+        &.delete {
+          background-color: #831616;
+        }
+      }
+    }
+  }
 }
