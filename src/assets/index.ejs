@@ -20,22 +20,37 @@
     <div class="front-matter">
       <h1><%= title %></h1>
       <%- description %>
+      <div class="toc">
+        <% paths.forEach(path => { %>
+        <div class="entry">
+          <span class="path"><%= path.path %></span>
+          <% path.operations.forEach(operation => { %>
+          <span class="operation"
+            ><span class="method <%= operation.method %>"
+              ><%= operation.method %></span
+            >
+            <%= operation.name %></span
+          ><% }); %>
+        </div>
+        <% }); %>
+      </div>
     </div>
 
     <% paths.forEach(path => { %>
     <div class="path">
       <% path.operations.forEach(operation => { %>
       <h2>
-        <%= operation.name %>
         <span class="path">
           <%= operation.path %>
           <span class="method <%= operation.method %>"
             ><%= operation.method %></span
           ></span
         >
+        <%= operation.name %>
       </h2>
 
-      <%- operation.description %> <% }); %>
+      <div class="description"><%- operation.description %></div>
+      <% }); %>
     </div>
     <% }); %>
   </body>

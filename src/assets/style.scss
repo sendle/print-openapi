@@ -30,15 +30,107 @@ body {
   }
 }
 
+a {
+  @media print {
+    color: #2a2a2a;
+  }
+}
+
+.toc {
+  .entry {
+    display: block;
+
+    .path {
+      font-family: $code-font-family;
+      color: #c4305b;
+      font-size: .9em;
+    }
+    .operation {
+      display: block;
+      margin-top: .2em
+    }
+    .method {
+      font-family: $code-font-family;
+      text-transform: uppercase;
+      display: inline-block;
+      padding: 0.4em 0.5em;
+      font-size: 0.8em;
+      margin-right: 0.4em;
+      position: relative;
+      top: -0.1em;
+      border-radius: 0.4em;
+      background: #201b1b;
+      color: #fff;
+
+      &.get {
+        background-color: #107610;
+      }
+      &.post {
+        background-color: #1c1c7e;
+      }
+      &.put {
+        background-color: #6f4811;
+      }
+      &.delete {
+        background-color: #831616;
+      }
+    }
+
+    + .entry {
+      margin-top: 1em;
+    }
+  }
+}
+
 body > .path {
   @media print {
     break-before: page;
+  }
+
+  .description {
+    > p:first-child {
+      margin-top: 0;
+    }
+
+    line-height: 1.2;
+
+    code, tt {
+      font-family: $code-font-family;
+      font-size: .9em;
+      display: inline-block;
+      background: #eee;
+      padding: 0.2em 0.4em;
+      position: relative;
+      margin: -0.2em 0;
+      border-radius: 0.25em;
+      color: #c02350; // touch darker than the colour of paths to help when printing in b+w
+    }
+
+    ul, ol {
+      li + li {
+        margin-top: .35em;
+      }
+    }
+
+    hr {
+      display: block;
+      border: 0;
+      height: 0.2em;
+      background: #ddd;
+      border-radius: 0.1em;
+    }
   }
 
   h2 {
     @media screen {
       margin-top: 2em;
     }
+    &:not(:first-child) {
+      @media print {
+        margin-top: 1.75em;
+      }
+    }
+    margin-bottom: .5em;
     font-size: 1.6em;
 
     .path {
@@ -46,9 +138,9 @@ body > .path {
       font-family: $code-font-family;
       font-size: 0.65em;
       font-weight: 500;
-      margin-top: 0.2em;
+      margin: 0.2em 0 .85em;
       padding: 0.4em 0.5em;
-      border-radius: 0.4em 0 0 0.4em;
+      border-radius: 0.4em;
       border-left: 1px solid rgb(30 28 28 / 12%);
       border-bottom: 1px solid rgb(30 28 28 / 12%);
       background: #eee;
