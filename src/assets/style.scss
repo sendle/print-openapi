@@ -189,7 +189,7 @@ body > .path {
       > .props {
         display: flex;
         > .prop {
-          margin: 1em 0 1em 1em;
+          margin: 1em 0 .2em 1em;
           display: flex;
           > div {
             border: rgb(30 28 28 / 12%) solid 1px;
@@ -234,6 +234,7 @@ body > .path {
 
   .security-scheme {
     margin-bottom: 1em;
+    margin-left: 1.2em;
   }
   .security-scheme.basic {
     display: flex;
