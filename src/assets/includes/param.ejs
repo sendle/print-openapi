@@ -1,0 +1,82 @@
+<div class="param<% if (param.explode) { %> explode<% } %><% if (param.required) { %> required<% } %><% if (param.deprecated) { %> deprecated<% } %>">
+  <div class="name">
+    <span class="main-name"><%= name; %></span>
+    <% if (param.type) { %>
+    <span class="type"><%= param.type %></span>
+    <% } else { %>
+    <% if (param.schema && param.schema.type && !param.explode) { %><span class="type"><%= param.schema.type %></span><% } %>
+    <% } %>
+    <% if (param.schema && param.schema.oneOf) { %><span class="oneOf">oneOf</span><% } %>
+    <% if (param.nullable) { %><span class="nullable">nullable</span><% } %>
+    <% if (param.deprecated) { %><span class="deprecated">deprecated</span><% } %>
+  </div>
+  <% if (param.description) { %>
+  <div class="description"><%- md_to_html(param.description) %></div>
+  <% } %>
+  <div class="props">
+    <% if (param.default) { %>
+    <div class="prop">
+      <div class="title">Default</div>
+      <div class="value"><%= param.default %></div>
+    </div>
+    <% } %>
+    <% if (param.enum) { %>
+    <div class="prop">
+      <div class="title">Allowed values</div>
+      <% param.enum.forEach(value => { %>
+      <div class="value mono"><%= value %></div>
+      <% }); %>
+    </div>
+    <% } %>
+    <% if (param.minLength) { %>
+    <div class="prop">
+      <div class="title">Min length</div>
+      <div class="value"><%= param.minLength %></div>
+    </div>
+    <% } %>
+    <% if (param.maxLength) { %>
+    <div class="prop">
+      <div class="title">Max length</div>
+      <div class="value"><%= param.maxLength %></div>
+    </div>
+    <% } %>
+    <% if (param.pattern) { %>
+    <div class="prop">
+      <div class="title">Regex pattern</div>
+      <div class="value mono code"><%= param.pattern %></div>
+    </div>
+    <% } %>
+  </div>
+  <% if (param.schema && param.style == 'form' && param.explode) { %>
+  <% if (param.schema.oneOf) { %>
+  <% param.schema.oneOf.forEach(pr => { %>
+  <div class="param exploded">
+    <div class="name"><%= pr.title; %></div>
+    <% if (pr.description) { %>
+    <div class="description"><%- md_to_html(pr.description) %></div>
+    <% } %>
+    <div class="param-list">
+      <% for (const [n, p] of Object.entries(pr.properties)) {%>
+      <%- include('param', {name: n, param: p, required: pr.required.includes(n), md_to_html}); %>
+      <% } %>
+    </div>
+  </div>
+  <% }); %>
+  <% } else { %>
+  <div class="param-list standalone">
+    <% if (param.schema.properties) { for (const [n, p] of Object.entries(param.schema.properties)) { %>
+    <%- include('param', {name: n, param: p, required: param.schema.required.includes(n), md_to_html}); %>
+    <% }} %>
+  </div>
+  <% } %>
+  <% } else { %>
+  <!-- no sub-params -->
+  <% } %>
+  <% if (param.properties) { %>
+  <div class="param-list standalone">
+    <% for (const [n, p] of Object.entries(param.properties)) { %>
+    <%- include('param', {name: n, param: p, required: param.required ? param.required.includes(n) : false, md_to_html}); %>
+    <% } %>
+  </div>
+  <% } %>
+</div>

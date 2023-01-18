@@ -31,9 +31,21 @@ body {
 }
 
 a {
+  @media screen {
+    //looks slightly nicer :)
+    color: #1f4fed;
+    &:visited {
+      color: #8b158b;
+    }
+  }
   @media print {
     color: #2a2a2a;
   }
+}
+
+p {
+  margin-block-start: 0.7em;
+  margin-block-end: 0.7em;
 }
 
 .toc {
@@ -87,37 +99,162 @@ body > .path {
     break-before: page;
   }
 
+  code, tt {
+    font-family: $code-font-family;
+    font-size: .9em;
+    display: inline-block;
+    background: #eee;
+    padding: 0.2em 0.4em;
+    position: relative;
+    margin: -0.2em 0;
+    border-radius: 0.25em;
+    color: #c02350; // touch darker than the colour of paths to help when printing in b+w
+  }
+
+  ul, ol {
+    li + li {
+      margin-top: .35em;
+    }
+  }
+
+  hr {
+    display: block;
+    border: 0;
+    height: 0.2em;
+    background: #ddd;
+    border-radius: 0.1em;
+  }
+
+  .parameters {
+    margin-top: 1.8em;
+  }
+
+  .param-list {
+    &.standalone {
+      margin-top: 1em;
+    }
+    .param {
+      padding: .75em 1em;
+      border: rgb(30 28 28 / 12%) 1px solid;
+      &.deprecated > .name .main-name {
+        color: #666;
+        text-decoration: line-through;
+      }
+      &.exploded {
+        border: none;
+        padding: 1em 0;
+        > .name {
+          font-style: italic; // because why not
+        }
+        > .param-list {
+          margin-top: 1em;
+          margin-left: 1em;
+        }
+      }
+      &:not(:first-child) {
+        border-top: none;
+      }
+      &:first-child {
+        border-top-left-radius: .4em;
+        border-top-right-radius: .4em;
+      }
+      &:last-child {
+        border-bottom-left-radius: .4em;
+        border-bottom-right-radius: .4em;
+      }
+      > .name {
+        margin-bottom: .5em;
+        .main-name {
+          font-family: $code-font-family;
+        }
+        .type, .nullable, .deprecated, .oneOf, &::after {
+          margin-left: .5em;
+          font-size: .8em;
+          position: relative;
+          top: -.2em;
+          color: #666;
+          text-decoration: none;
+        }
+      }
+      &.explode > .name .main-name, &.exploded > .name .main-name {
+        font-family: $regular-font-family;
+      }
+      &.required > .name::after {
+        content: "required";
+        color: #c02350;
+      }
+      > .description p:last-child {
+        margin-bottom: 0;
+      }
+      > .props {
+        display: flex;
+        > .prop {
+          margin: 1em 0 1em 1em;
+          display: flex;
+          > div {
+            border: rgb(30 28 28 / 12%) solid 1px;
+            padding: .5em 1em;
+            &:first-child {
+              border-radius: 0.5em 0 0 0.5em;
+            }
+            &:last-child {
+              border-radius: 0 0.5em 0.5em 0;
+            }
+          }
+          .title {
+            font-size: .8em;
+            padding-top: 0.8em;
+          }
+          .value {
+            border-left: none;
+            &.mono {
+              font-family: $code-font-family;
+            }
+            &.code {
+              color: #c02350;
+            }
+          }
+        }
+      }
+    }
+  }
+
   .description {
     > p:first-child {
       margin-top: 0;
     }
 
-    line-height: 1.2;
+    line-height: 1.3;
+    margin-left: 1.2em;
+  }
 
-    code, tt {
-      font-family: $code-font-family;
-      font-size: .9em;
-      display: inline-block;
-      background: #eee;
-      padding: 0.2em 0.4em;
-      position: relative;
-      margin: -0.2em 0;
-      border-radius: 0.25em;
-      color: #c02350; // touch darker than the colour of paths to help when printing in b+w
-    }
+  h3 {
+    margin-bottom: .6em;
+  }
 
-    ul, ol {
-      li + li {
-        margin-top: .35em;
+  .security-scheme {
+    margin-bottom: 1em;
+  }
+  .security-scheme.basic {
+    display: flex;
+    > div {
+      border: rgb(30 28 28 / 12%) solid 1px;
+      padding: .5em 1em;
+      &:first-child {
+        border-radius: 0.5em 0 0 0.5em;
+      }
+      &:last-child {
+        border-radius: 0 0.5em 0.5em 0;
       }
     }
-
-    hr {
-      display: block;
-      border: 0;
-      height: 0.2em;
-      background: #ddd;
-      border-radius: 0.1em;
+    .name {
+      font-size: .8em;
+      padding-top: 0.8em;
+    }
+    .field {
+      border-left: none;
+      color: #888;
+      width: 9em;
     }
   }
 

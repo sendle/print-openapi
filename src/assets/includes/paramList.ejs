@@ -1,0 +1,5 @@
+<div class="param-list">
+  <% params.forEach(param => { if (param.in == param_in) { %>
+  <%- include('param', {name: param.name, param, md_to_html}); %>
+  <% } }); %>
+</div>

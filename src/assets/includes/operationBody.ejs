@@ -1,0 +1,18 @@
+<div class="operation-body">
+  <div class="type">
+    <%= body[0] %>
+  </div>
+  <div class="description">
+    <%- md_to_html(body[2]) %>
+  </div>
+  <div class="param-list">
+    <% if (body[1].schema.type == 'object' && body[1].schema.oneOf) { %>
+    <% body[1].schema.oneOf.forEach(param => { %>
+    <%- include('param', {name: param.title, param, md_to_html}); %>
+    <% }); %>
+    <% } else { %>
+    <div>I don't know what type of body this is.</div>
+    <div><%= JSON.stringify(body[1].schema) %></div>
+    <% } %>
+  </div>
+</div>

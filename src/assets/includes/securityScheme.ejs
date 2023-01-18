@@ -1,0 +1,10 @@
+<div class="security-scheme <%= scheme.security.scheme %>">
+  <% if (scheme.security.scheme == 'basic') { %>
+  <div class="name">HTTP Basic</div>
+  <div class="field">Username</div>
+  <div class="field">Password</div>
+  <% } else { %> unknown auth type "<%= scheme.security.scheme %>" <% } %>
+</div>
+<% if (scheme.security.description) { %>
+<div class="description"><%- md_to_html(scheme.security.description) %></div>
+<% } %>

@@ -23,13 +23,43 @@ export async function convertToHTML(
     const operations: any[] = [];
     let pathName = '';
     Object.values(path).forEach((operation) => {
+      const param_types: { [name: string]: number } = {
+        header: 0,
+        path: 0,
+        query: 0,
+      };
+
+      if (operation.getParameters()) {
+        operation.getParameters().forEach((param) => {
+          param_types[param.in] += 1;
+        });
+      }
+
+      const params_as_schema: { [name: string]: object } = {};
+      if (operation.getParametersAsJSONSchema()) {
+        operation.getParametersAsJSONSchema().forEach((group) => {
+          params_as_schema[group.type] = group;
+        });
+      }
+
       operations.push({
         name: operation.getSummary(),
         path: operation.path,
         method: operation.method,
         description: html(operation.getDescription()),
+        security: operation.getSecurityWithTypes(true),
+        param_types,
+        params: operation.getParameters(),
+        params_as_schema,
+        body: operation.getRequestBody(),
       });
       pathName = operation.path;
+      // operation.getParameters().forEach((param) => {
+      //   console.log(param.name);
+      //   console.dir(param);
+      //   console.log('');
+      // });
+      console.dir(operation.getRequestBody());
     });
     paths.push({
       path: pathName,
@@ -46,5 +76,6 @@ export async function convertToHTML(
     description,
     style: css.css,
     paths,
+    md_to_html: html,
   });
 }
