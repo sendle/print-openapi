@@ -4,7 +4,7 @@ This tool takes an OpenAPI file and spits out a printable, static HTML file. Sin
 
 **Why?**
 
-Most OpenAPI tooling focuses on creating fancy displays that you can click on, send API requests with, etc. But sometimes you just need a plain, easily-readable, and static copy of your API docs. We needed that, so we built this!
+Most OpenAPI tooling focuses on creating fancy displays that you can click on, send API requests with, etc. But sometimes you just need a plain, easily-readable, and static copy of your API docs. We needed that here at [Sendle](https://www.sendle.com/), so we built this tool!
 
 **How?**
 
