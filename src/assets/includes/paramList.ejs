@@ -1,5 +1,5 @@
 <div class="param-list indent">
   <% params.forEach(param => { if (param.in == param_in) { %>
-  <%- include('param', {name: param.name, param, md_to_html}); %>
+  <%- include('param', {name: param.name, param, exploded:false, md_to_html}); %>
   <% } }); %>
 </div>

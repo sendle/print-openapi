@@ -25,8 +25,9 @@ body {
 
   @media screen {
     // printed pages have left + right margins already,
-    //  so only apply this to the screen
-    padding: 0 1em;
+    //  so only apply this to the screen. also apply a
+    //  margin at the bottom
+    padding: 0 1em 2em;
   }
 }
 

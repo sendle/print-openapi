@@ -1,4 +1,4 @@
-<div class="param<% if (param.explode) { %> explode<% } %><% if (param.required) { %> required<% } %><% if (param.deprecated) { %> deprecated<% } %>">
+<div class="param<% if (exploded) { %> exploded<% } %><% if (param.explode) { %> explode<% } %><% if (param.required) { %> required<% } %><% if (param.deprecated) { %> deprecated<% } %>">
   <div class="name">
     <span class="main-name"><%= name; %></span>
     <% if (param.type) { %>
@@ -57,7 +57,7 @@
     <% } %>
     <div class="param-list">
       <% for (const [n, p] of Object.entries(pr.properties)) {%>
-      <%- include('param', {name: n, param: p, required: pr.required.includes(n), md_to_html}); %>
+      <%- include('param', {name: n, param: p, required: pr.required.includes(n), exploded:false, md_to_html}); %>
       <% } %>
     </div>
   </div>
@@ -65,7 +65,7 @@
   <% } else { %>
   <div class="param-list standalone">
     <% if (param.schema.properties) { for (const [n, p] of Object.entries(param.schema.properties)) { %>
-    <%- include('param', {name: n, param: p, required: param.schema.required.includes(n), md_to_html}); %>
+    <%- include('param', {name: n, param: p, required: param.schema.required.includes(n), exploded:false, md_to_html}); %>
     <% }} %>
   </div>
   <% } %>
@@ -74,7 +74,7 @@
   <% if (param.properties) { %>
   <div class="param-list standalone">
     <% for (const [n, p] of Object.entries(param.properties)) { %>
-    <%- include('param', {name: n, param: p, required: param.required ? param.required.includes(n) : false, md_to_html}); %>
+    <%- include('param', {name: n, param: p, required: param.required ? param.required.includes(n) : false, exploded:false, md_to_html}); %>
     <% } %>
   </div>
   <% } %>

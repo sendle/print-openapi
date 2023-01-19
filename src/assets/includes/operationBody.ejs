@@ -9,11 +9,11 @@
   <div class="param-list indent">
     <% if (body[1].schema.type == 'object' && body[1].schema.oneOf) { %>
     <% body[1].schema.oneOf.forEach(param => { %>
-    <%- include('param', {name: param.title, param, md_to_html}); %>
+    <%- include('param', {name: param.title, param, exploded: true, md_to_html}); %>
     <% }); %>
     <% } else if (body[1].schema.type == 'object' && body[1].schema.properties) { %>
     <% for (const [name, param] of Object.entries(body[1].schema.properties)) { %>
-    <%- include('param', {name, param, md_to_html}); %>
+    <%- include('param', {name, param, exploded: false, md_to_html}); %>
     <% } %>
     <% } else { %>
     <div>I don't know what type of body this is.</div>
