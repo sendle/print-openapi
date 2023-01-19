@@ -1,5 +1,0 @@
-<div class="param-list">
-  <% for (const [name, param] of Object.entries(params.schema.properties)) {%>
-  <%- include('paramSchema', {name, param, required: params.schema.required.includes(name), exploded:false, md_to_html}); %>
-  <% } %>
-</div>
