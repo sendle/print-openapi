@@ -1,4 +1,4 @@
-<div class="param<% if (exploded) { %> exploded<% } %><% if (param.explode) { %> explode<% } %><% if (param.required) { %> required<% } %><% if (param.deprecated) { %> deprecated<% } %>">
+<div class="param<% if (exploded) { %> exploded<% } %><% if (param.explode) { %> explode<% } %><% if (required || param.required) { %> required<% } %><% if (param.deprecated) { %> deprecated<% } %>">
   <div class="name">
     <span class="main-name"><%= name; %></span>
     <% if (param.type) { %>
