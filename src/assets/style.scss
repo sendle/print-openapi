@@ -256,6 +256,34 @@ body > .path {
 
     line-height: 1.3;
     margin-left: 1.2em;
+
+    // markdown table
+    > table {
+      border: rgb(30 28 28 / 12%) .2em solid;
+      border-radius: .4em;
+      border-spacing: 0;
+      margin: 1em 0;
+      thead {
+        th {
+          background: rgb(30 28 28 / 12%);
+          &:first-child {
+            border-top-left-radius: .2em;
+          }
+          &:last-child {
+            border-top-right-radius: .2em;
+          }
+        }
+      }
+      tbody tr:not(:nth-child(1)) td {
+        border-top: rgb(30 28 28 / 12%) .1em solid;
+      }
+      tbody tr td:not(:nth-child(1)) {
+        border-left: rgb(30 28 28 / 12%) .2em solid;
+      }
+      th, td {
+        padding: .25em .6em;
+      }
+    }
   }
 
   h3 {
