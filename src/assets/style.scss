@@ -125,6 +125,28 @@ body > .path {
     border-radius: 0.1em;
   }
 
+  .operation-body {
+    > .name {
+      margin-left: 1.2em;
+      margin-bottom: .6em;
+      &::before {
+        content: "Body type: ";
+        color: #666;
+      }
+      .main-name {
+        font-family: $code-font-family;
+      }
+      .type, .nullable, .deprecated, .oneOf, &::after {
+        margin-left: .5em;
+        font-size: .8em;
+        position: relative;
+        top: -.2em;
+        color: #666;
+        text-decoration: none;
+      }
+    }
+  }
+
   .parameters {
     margin-top: 1.8em;
   }
@@ -132,6 +154,9 @@ body > .path {
   .param-list {
     &.standalone {
       margin-top: 1em;
+    }
+    &.indent {
+      margin-left: 1.2em;
     }
     .param {
       padding: .75em 1em;
