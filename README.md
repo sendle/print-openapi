@@ -1,4 +1,4 @@
-# Print OpenAPI
+# Print OpenAPI [![NPM Package](https://img.shields.io/npm/v/print-openapi)](https://www.npmjs.com/package/print-openapi) [![MIT License](https://img.shields.io/npm/l/print-openapi)](./LICENSE)
 
 This tool takes an OpenAPI file and spits out a printable, static HTML file. Since most browsers have a 'Print to PDF' function, you can use this to generate nice PDFs of your OpenAPI specs.
 
