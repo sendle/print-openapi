@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "Generate a printable HTML file from your OpenAPI spec.",
   "author": "Daniel Oakley <daniel@danieloaks.net>",
-  "license": "ISC",
+  "license": "MIT",
   "keywords": [
     "openapi"
   ],
