@@ -166,6 +166,10 @@ body > .path {
         color: #666;
         text-decoration: line-through;
       }
+      &.explode {
+        border: none;
+        padding: 0;
+      }
       &.exploded {
         border: none;
         padding: 1em 0;
