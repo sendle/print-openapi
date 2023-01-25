@@ -1,0 +1,11 @@
+<div class="example">
+  <div class="name">
+    <span class="main-name"><%= name %></span>
+  </div>
+  <% if (description) { %>
+  <div class="description">
+    <%- md_to_html(description) %>
+  </div>
+  <% } %>
+  <div class="value"><% if (typeof value === 'string' || value instanceof String) { %><%= value.trim() %><% } else if (bodyType == 'application/json') { %><%= JSON.stringify(value, null, 2).trim() %><% } else { %>I don't know how to make the example value readable. Body type is [<%= bodyType %>].<% } %></div>
+</div>

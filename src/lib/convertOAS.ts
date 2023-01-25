@@ -60,6 +60,7 @@ export async function convertToHTML(
         body: operation.getRequestBody(),
         responseStatusCodes: operation.getResponseStatusCodes(),
         responses,
+        responseExamples: operation.getResponseExamples(),
       });
       pathName = operation.path;
       // operation.getParameters().forEach((param) => {
@@ -67,7 +68,7 @@ export async function convertToHTML(
       //   console.dir(param);
       //   console.log('');
       // });
-      //console.dir(operation.getResponseByStatusCode(429));
+      // console.dir(responses);
     });
     paths.push({
       path: pathName,

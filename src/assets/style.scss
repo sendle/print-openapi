@@ -151,6 +151,29 @@ body > .path {
     }
   }
 
+  .example {
+    margin: 1.25em 0 0;
+    > .name {
+      margin-left: 1.2em;
+      margin-bottom: .6em;
+      &::before {
+        content: "Example: ";
+        color: #666;
+      }
+    }
+    > .value {
+      margin-left: 1.2em;
+      padding: .75em 1em;
+      border: rgb(30 28 28 / 12%) 1px solid;
+      border-radius: 0.4em;
+      font-family: $code-font-family;
+      white-space: pre-wrap;
+    }
+    + .operation-body {
+      margin-top: 1.5em;
+    }
+  }
+
   .parameters {
     margin-top: 1.8em;
   }

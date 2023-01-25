@@ -39,7 +39,7 @@
     </h2>
     <div class="description"><%- operation.description %></div>
 
-    <% if (operation.security) { %>
+    <% if (operation.security.length > 0) { %>
     <div class="parameters security">
       <h3>Auth</h3>
       <% operation.security.forEach(scheme_list => {
