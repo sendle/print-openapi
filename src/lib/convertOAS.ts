@@ -84,6 +84,7 @@ export async function convertToHTML(
   return ejs.renderFile(path.join(__dirname, '../assets/index.ejs'), {
     title: doc.getDefinition().info.title,
     description,
+    externalDocs: doc.api.externalDocs,
     style: css.css,
     paths,
     md_to_html: html,

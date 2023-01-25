@@ -16,6 +16,13 @@
   <div class="front-matter">
     <h1><%= title %></h1>
     <%- description %>
+    <% if (externalDocs) { %>
+    <hr>
+    <% if (externalDocs.description) { %>
+    <%- md_to_html(externalDocs.description) %>
+    <% } %>
+    <%- md_to_html(externalDocs.url) %>
+    <% } %>
     <div class="toc">
       <% paths.forEach(path => { %>
       <div class="entry">
