@@ -321,17 +321,15 @@ body > .path {
       &.c5 {
         background: #fbcdcd;
       }
-      // &:first-child {
-      //   border-radius: 0.5em 0 0 0.5em;
-      // }
-      // &:last-child {
-      //   border-radius: 0 0.5em 0.5em 0;
-      // }
     }
   }
 
   .response-entry {
     margin: 2em 0;
+    .header-name {
+      margin: 1em 1.2em 0.5em;
+      font-weight: bold;
+    }
   }
 
   .security-scheme {

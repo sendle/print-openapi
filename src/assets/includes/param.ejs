@@ -40,6 +40,18 @@
       <div class="value"><%= param.maxLength %></div>
     </div>
     <% } %>
+    <% if (param.minItems) { %>
+    <div class="prop">
+      <div class="title">Min items</div>
+      <div class="value"><%= param.minItems %></div>
+    </div>
+    <% } %>
+    <% if (param.maxItems) { %>
+    <div class="prop">
+      <div class="title">Max items</div>
+      <div class="value"><%= param.maxItems %></div>
+    </div>
+    <% } %>
     <% if (param.pattern) { %>
     <div class="prop">
       <div class="title">Regex pattern</div>
@@ -76,6 +88,11 @@
     <% for (const [n, p] of Object.entries(param.properties)) { %>
     <%- include('param', {name: n, param: p, required: param.required ? param.required.includes(n) : false, exploded:false, md_to_html}); %>
     <% } %>
+  </div>
+  <% } %>
+  <% if (param.items) { %>
+  <div class="param-list standalone">
+    <%- include('param', {name: 'Each entry', param: param.items, required: false, exploded:true, md_to_html}); %>
   </div>
   <% } %>
 </div>

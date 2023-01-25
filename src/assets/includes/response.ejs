@@ -6,6 +6,14 @@
   <% if (response.description) { %>
   <div class="description"><%- md_to_html(response.description) %></div>
   <% } %>
+  <% if (response.headers) { %>
+  <div class="header-name">HTTP Headers</div>
+  <div class="param-list indent">
+    <% for (const [name, header] of Object.entries(response.headers)) { %>
+    <%- include('param', {name, param: header, required: false, exploded: false, md_to_html}); %>
+    <% } %>
+  </div>
+  <% } %>
   <% if (response.content) { %>
   <% for (const [bodyType, bodyContent] of Object.entries(response.content)) { %>
   <%- include('body', {bodyType, description: null, content: bodyContent, md_to_html}); %>

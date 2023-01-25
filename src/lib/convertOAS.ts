@@ -47,7 +47,6 @@ export async function convertToHTML(
       operation.getResponseStatusCodes().forEach(statusCode => {
         responses[statusCode] = operation.getResponseByStatusCode(statusCode);
       });
-      console.dir(responses);
 
       operations.push({
         name: operation.getSummary(),
@@ -68,6 +67,7 @@ export async function convertToHTML(
       //   console.dir(param);
       //   console.log('');
       // });
+      //console.dir(operation.getResponseByStatusCode(429));
     });
     paths.push({
       path: pathName,
