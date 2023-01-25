@@ -1,0 +1,25 @@
+<div class="operation-body">
+  <div class="name">
+    <span class="main-name"><%= bodyType %></span>
+    <% if (content.schema.oneOf) { %><span class="oneOf">oneOf</span><% } %>
+  </div>
+  <% if (description) { %>
+  <div class="description">
+    <%- md_to_html(description) %>
+  </div>
+  <% } %>
+  <div class="param-list indent">
+    <% if (content.schema.type == 'object' && content.schema.oneOf) { %>
+    <% content.schema.oneOf.forEach(param => { %>
+    <%- include('param', {name: param.title, param, required: false, exploded: true, md_to_html}); %>
+    <% }); %>
+    <% } else if (content.schema.type == 'object' && content.schema.properties) { %>
+    <% for (const [name, param] of Object.entries(content.schema.properties)) { %>
+    <%- include('param', {name, param, required: false, exploded: false, md_to_html}); %>
+    <% } %>
+    <% } else { %>
+    <div>I don't know what type of body this is.</div>
+    <div><%= JSON.stringify(content.schema) %></div>
+    <% } %>
+  </div>
+</div>

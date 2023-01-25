@@ -4,6 +4,7 @@ import { html } from '@readme/markdown';
 import ejs from 'ejs';
 import path from 'path';
 import sass from 'sass';
+import { ResponseObject } from 'oas/dist/rmoas.types';
 
 export async function convertToHTML(
   openapiInput: OpenAPI.Document
@@ -42,6 +43,12 @@ export async function convertToHTML(
         });
       }
 
+      const responses: { [statusCode: string]: boolean | ResponseObject } = {}
+      operation.getResponseStatusCodes().forEach(statusCode => {
+        responses[statusCode] = operation.getResponseByStatusCode(statusCode);
+      });
+      console.dir(responses);
+
       operations.push({
         name: operation.getSummary(),
         path: operation.path,
@@ -52,6 +59,8 @@ export async function convertToHTML(
         params: operation.getParameters(),
         params_as_schema,
         body: operation.getRequestBody(),
+        responseStatusCodes: operation.getResponseStatusCodes(),
+        responses,
       });
       pathName = operation.path;
       // operation.getParameters().forEach((param) => {
@@ -59,7 +68,6 @@ export async function convertToHTML(
       //   console.dir(param);
       //   console.log('');
       // });
-      // console.dir(operation.getRequestBody());
     });
     paths.push({
       path: pathName,

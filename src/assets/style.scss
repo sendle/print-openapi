@@ -124,6 +124,9 @@ body > .path {
     height: 0.2em;
     background: #ddd;
     border-radius: 0.1em;
+    &.indent {
+      margin-left: 1.2em;
+    }
   }
 
   .operation-body {
@@ -288,6 +291,47 @@ body > .path {
 
   h3 {
     margin-bottom: .6em;
+  }
+
+  .status-codes {
+    margin-bottom: 1em;
+    margin-left: 1.2em;
+    display: flex;
+
+    > .code {
+      border: rgb(30 28 28 / 12%) solid 1px;
+      padding: .5em 1em;
+      border-radius: .5em;
+      font-family: $code-font-family;
+      + .code {
+        margin-left: .5em;
+      }
+      &.c1 {
+        background: #ddf8ff;
+      }
+      &.c2 {
+        background: #d9f4df;
+      }
+      &.c3 {
+        background: #edf2f8;
+      }
+      &.c4 {
+        background: #fbedcd;
+      }
+      &.c5 {
+        background: #fbcdcd;
+      }
+      // &:first-child {
+      //   border-radius: 0.5em 0 0 0.5em;
+      // }
+      // &:last-child {
+      //   border-radius: 0 0.5em 0.5em 0;
+      // }
+    }
+  }
+
+  .response-entry {
+    margin: 2em 0;
   }
 
   .security-scheme {

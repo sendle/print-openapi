@@ -1,0 +1,14 @@
+<div class="response-entry">
+  <div class="status-codes">
+    <div class="code c<%= statusCode.charAt(0) %> c<%= statusCode %>"><%= statusCode %></div>
+  </div>
+
+  <% if (response.description) { %>
+  <div class="description"><%- md_to_html(response.description) %></div>
+  <% } %>
+  <% if (response.content) { %>
+  <% for (const [bodyType, bodyContent] of Object.entries(response.content)) { %>
+  <%- include('body', {bodyType, description: null, content: bodyContent, md_to_html}); %>
+  <% } %>
+  <% } %>
+</div>

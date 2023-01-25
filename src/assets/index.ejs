@@ -47,31 +47,41 @@
       <%- include('includes/securityScheme', {scheme,md_to_html}); %>
       <% }); }); %>
     </div>
-    <% }%>
+    <% } %>
     <% if (operation.param_types.path > 0) { %>
     <div class="parameters path">
       <h3>Path parameters</h3>
       <%- include('includes/paramList', {params: operation.params, param_in: 'path', md_to_html}); %>
     </div>
-    <% }%>
+    <% } %>
     <% if (operation.param_types.header > 0) { %>
     <div class="parameters header">
       <h3>HTTP Header parameters</h3>
       <%- include('includes/paramList', {params: operation.params, param_in: 'header', md_to_html}); %>
     </div>
-    <% }%>
+    <% } %>
     <% if (operation.param_types.query > 0) { %>
     <div class="parameters query">
       <h3>Query string parameters</h3>
       <%- include('includes/paramList', {params: operation.params, param_in: 'query', md_to_html}); %>
     </div>
-    <% }%>
+    <% } %>
     <% if (operation.body) { %>
     <div class="parameters body">
       <h3>Request body</h3>
-      <%- include('includes/operationBody', {body: operation.body, md_to_html}); %>
+      <%- include('includes/body', {bodyType: operation.body[0], description: operation.body[2], content: operation.body[1], md_to_html}); %>
     </div>
-    <% }%>
+    <% } %>
+    <% if (operation.responseStatusCodes) { %>
+    <div class="parameters response">
+      <h3>Responses</h3>
+      <%- include('includes/statusCodes', {statusCodes: operation.responseStatusCodes, md_to_html}); %>
+      <hr class="indent">
+      <% for (const [statusCode, response] of Object.entries(operation.responses)) { %>
+      <%- include('includes/response', {statusCode, response, md_to_html}); %>
+      <% } %>
+    </div>
+    <% } %>
 
     <% }); %>
   </div>
