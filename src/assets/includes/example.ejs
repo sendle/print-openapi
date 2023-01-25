@@ -7,5 +7,5 @@
     <%- md_to_html(description) %>
   </div>
   <% } %>
-  <div class="value"><% if (typeof value === 'string' || value instanceof String) { %><%= value.trim() %><% } else if (bodyType == 'application/json') { %><%= JSON.stringify(value, null, 2).trim() %><% } else { %>I don't know how to make the example value readable. Body type is [<%= bodyType %>].<% } %></div>
+  <div class="value"><% if (typeof value === 'string' || value instanceof String) { %><%- hljs.highlightAuto(value.trim()).value; %><% } else if (bodyType == 'application/json') { %><%- hljs.highlight(JSON.stringify(value, null, 2).trim(), {language: 'json'}).value; %><% } else { %>I don't know how to make the example value readable. Body type is [<%= bodyType %>].<% } %></div>
 </div>

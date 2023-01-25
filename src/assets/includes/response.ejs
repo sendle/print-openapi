@@ -18,11 +18,11 @@
   <% for (const [bodyType, bodyContent] of Object.entries(response.content)) { %>
   <%- include('body', {bodyType, description: null, content: bodyContent, md_to_html}); %>
   <% if (bodyContent.example) { %>
-  <%- include('example', {bodyType, name: '', description: null, value: bodyContent.example, md_to_html}); %>
+  <%- include('example', {bodyType, name: '', description: null, value: bodyContent.example, md_to_html, hljs}); %>
   <% } %>
   <% if (bodyContent.examples) { %>
   <% for (const [name, example] of Object.entries(bodyContent.examples)) { %>
-  <%- include('example', {bodyType, name, description: example.description, value: example.value, md_to_html}); %>
+  <%- include('example', {bodyType, name, description: example.description, value: example.value, md_to_html, hljs}); %>
   <% } %>
   <% } %>
   <% } %>

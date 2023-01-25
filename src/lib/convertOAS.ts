@@ -5,6 +5,7 @@ import ejs from 'ejs';
 import path from 'path';
 import sass from 'sass';
 import { ResponseObject } from 'oas/dist/rmoas.types';
+import hljs from 'highlight.js';
 
 export async function convertToHTML(
   openapiInput: OpenAPI.Document
@@ -86,5 +87,6 @@ export async function convertToHTML(
     style: css.css,
     paths,
     md_to_html: html,
+    hljs,
   });
 }

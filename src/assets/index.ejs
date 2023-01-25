@@ -78,7 +78,7 @@
       <%- include('includes/statusCodes', {statusCodes: operation.responseStatusCodes, md_to_html}); %>
       <hr class="indent">
       <% for (const [statusCode, response] of Object.entries(operation.responses)) { %>
-      <%- include('includes/response', {statusCode, response, md_to_html}); %>
+      <%- include('includes/response', {statusCode, response, md_to_html, hljs}); %>
       <% } %>
     </div>
     <% } %>
