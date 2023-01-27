@@ -362,27 +362,27 @@ body > .path {
   .security-scheme {
     margin-bottom: 1em;
     margin-left: 1.2em;
-  }
-  .security-scheme.basic {
-    display: flex;
-    > div {
-      border: rgb(30 28 28 / 12%) solid 1px;
-      padding: .5em 1em;
-      &:first-child {
-        border-radius: 0.5em 0 0 0.5em;
+    &.basic, &.bearer {
+      display: flex;
+      > div {
+        border: rgb(30 28 28 / 12%) solid 1px;
+        padding: .5em 1em;
+        &:first-child {
+          border-radius: 0.5em 0 0 0.5em;
+        }
+        &:last-child {
+          border-radius: 0 0.5em 0.5em 0;
+        }
       }
-      &:last-child {
-        border-radius: 0 0.5em 0.5em 0;
+      .name {
+        font-size: .8em;
+        padding-top: 0.8em;
       }
-    }
-    .name {
-      font-size: .8em;
-      padding-top: 0.8em;
-    }
-    .field {
-      border-left: none;
-      color: #888;
-      width: 9em;
+      .field {
+        border-left: none;
+        color: #888;
+        width: 9em;
+      }
     }
   }
 

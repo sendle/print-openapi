@@ -3,6 +3,9 @@
   <div class="name">HTTP Basic</div>
   <div class="field">Username</div>
   <div class="field">Password</div>
+  <% } else if (scheme.security.scheme == 'bearer') { %>
+  <div class="name">HTTP Bearer</div>
+  <div class="field">Token <% if (scheme.security.bearerFormat) { %>(<%= scheme.security.bearerFormat %>)<% } %></div>
   <% } else { %> unknown auth type "<%= scheme.security.scheme %>" <% } %>
 </div>
 <% if (scheme.security.description) { %>
