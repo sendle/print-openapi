@@ -62,6 +62,7 @@ export async function convertToHTML(
         responseStatusCodes: operation.getResponseStatusCodes(),
         responses,
         responseExamples: operation.getResponseExamples(),
+        servers: operation.schema.servers, //todo: get path servers
       });
       pathName = operation.path;
       // operation.getParameters().forEach((param) => {
@@ -70,6 +71,7 @@ export async function convertToHTML(
       //   console.log('');
       // });
       // console.dir(responses);
+      // console.dir(operation);
     });
     paths.push({
       path: pathName,
@@ -85,6 +87,7 @@ export async function convertToHTML(
     title: doc.getDefinition().info.title,
     description,
     externalDocs: doc.api.externalDocs,
+    servers: doc.api.servers,
     style: css.css,
     paths,
     md_to_html: html,

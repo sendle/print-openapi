@@ -23,6 +23,10 @@
     <% } %>
     <%- md_to_html(externalDocs.url) %>
     <% } %>
+    <% if (servers) { %>
+    <hr>
+    <%- include('includes/servers', {servers, md_to_html}); %>
+    <% } %>
     <div class="toc">
       <% paths.forEach(path => { %>
       <div class="entry">
@@ -46,12 +50,18 @@
     </h2>
     <div class="description"><%- operation.description %></div>
 
+    <% if (operation.servers) { %>
+    <div class="parameters servers">
+      <h3>Servers</h3>
+      <%- include('includes/servers', {servers: operation.servers, md_to_html}); %>
+    </div>
+    <% } %>
     <% if (operation.security.length > 0) { %>
     <div class="parameters security">
       <h3>Auth</h3>
       <% operation.security.forEach(scheme_list => {
         scheme_list.forEach(scheme => { %>
-      <%- include('includes/securityScheme', {scheme,md_to_html}); %>
+      <%- include('includes/securityScheme', {scheme, md_to_html}); %>
       <% }); }); %>
     </div>
     <% } %>

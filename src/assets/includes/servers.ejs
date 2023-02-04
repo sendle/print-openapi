@@ -1,0 +1,8 @@
+<table class="servers">
+  <% servers.forEach(server => { %>
+  <tr>
+    <td class="name"><%= server.description %></td>
+    <td class="url"><%= server.url %></td>
+  </tr>
+  <% }); %>
+</table>
