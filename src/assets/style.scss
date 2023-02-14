@@ -4,6 +4,8 @@
 // variables
 $regular-font-family: Roboto, 'Segoe UI', Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 $code-font-family: 'Roboto Mono', monospace;
+$param-border-color: rgb(30 28 28 / 62%);
+$param-border-internal-color: rgb(30 28 28 / 32%);
 
 // special print elements
 @media print {
@@ -167,7 +169,7 @@ body > .path {
     > .value {
       margin-left: 1.2em;
       padding: .75em 1em;
-      border: rgb(30 28 28 / 12%) 1px solid;
+      border: $param-border-color 1px solid;
       border-radius: 0.4em;
       font-family: $code-font-family;
       white-space: pre-wrap;
@@ -191,7 +193,7 @@ body > .path {
     }
     .param {
       padding: .75em 1em;
-      border: rgb(30 28 28 / 12%) 1px solid;
+      border: $param-border-color 1px solid;
       &.deprecated > .name .main-name {
         color: #666;
         text-decoration: line-through;
@@ -252,7 +254,7 @@ body > .path {
           margin: 1em 0 .2em 1em;
           display: flex;
           > div {
-            border: rgb(30 28 28 / 12%) solid 1px;
+            border: $param-border-color solid 1px;
             padding: .5em 1em;
             &:first-child {
               border-radius: 0.5em 0 0 0.5em;
@@ -289,7 +291,7 @@ body > .path {
 
     // markdown table
     > table {
-      border: rgb(30 28 28 / 12%) .2em solid;
+      border: $param-border-color .2em solid;
       border-radius: .4em;
       border-spacing: 0;
       margin: 1em 0;
@@ -305,10 +307,10 @@ body > .path {
         }
       }
       tbody tr:not(:nth-child(1)) td {
-        border-top: rgb(30 28 28 / 12%) .1em solid;
+        border-top: $param-border-internal-color .1em solid;
       }
       tbody tr td:not(:nth-child(1)) {
-        border-left: rgb(30 28 28 / 12%) .2em solid;
+        border-left: $param-border-internal-color .2em solid;
       }
       th, td {
         padding: .25em .6em;
@@ -326,7 +328,7 @@ body > .path {
     display: flex;
 
     > .code {
-      border: rgb(30 28 28 / 12%) solid 1px;
+      border: $param-border-color solid 1px;
       padding: .5em 1em;
       border-radius: .5em;
       font-family: $code-font-family;
@@ -365,7 +367,7 @@ body > .path {
     &.basic, &.bearer {
       display: flex;
       > div {
-        border: rgb(30 28 28 / 12%) solid 1px;
+        border: $param-border-color solid 1px;
         padding: .5em 1em;
         &:first-child {
           border-radius: 0.5em 0 0 0.5em;
@@ -453,17 +455,17 @@ body > .path {
 }
 .parameters.servers table.servers {
   margin-left: 1.2em;
-  border: rgb(30 28 28 / 12%) 1px solid;
+  border: $param-border-color 1px solid;
   border-radius: .6em;
   td.url {
-    border-left: rgb(30 28 28 / 12%) 1px solid;
+    border-left: $param-border-color 1px solid;
   }
 }
 table.servers {
   border-spacing: 0;
 
   tbody tr:not(:nth-child(1)) td {
-    border-top: rgb(30 28 28 / 12%) 1px solid;
+    border-top: $param-border-color 1px solid;
   }
   th, td {
     padding: 0.4em 1em;
