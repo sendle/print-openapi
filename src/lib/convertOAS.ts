@@ -7,6 +7,15 @@ import sass from 'sass';
 import { ResponseObject } from 'oas/dist/rmoas.types';
 import hljs from 'highlight.js';
 
+export interface Page {
+  name: string,
+  slug: string,
+  tags: string[],
+  content: string,
+  pages: Page[],
+  aaa: string,
+}
+
 export async function convertToHTML(
   openapiInput: OpenAPI.Document
 ): Promise<string> {
@@ -17,6 +26,21 @@ export async function convertToHTML(
   const description = doc.api.info.description
     ? html(doc.api.info.description)
     : '';
+
+  // parse pages
+  const x_pages: Page[] = [];
+
+  if (doc.hasExtension('x-pages') && Array.isArray(doc.getExtension('x-pages'))) {
+    const pages = doc.getExtension('x-pages') as Page[];
+    
+    pages.forEach(page => {
+      if (page.slug === undefined) {
+        //TODO: slugify and keep track of all existing page slugs used
+        page.slug = 'todo';
+      }
+      x_pages.push(page);
+    });
+  }
 
   // parse operations
   const paths: any[] = [];
@@ -90,6 +114,7 @@ export async function convertToHTML(
     servers: doc.api.servers,
     style: css.css,
     paths,
+    extra_pages: x_pages,
     md_to_html: html,
     hljs,
   });

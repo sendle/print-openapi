@@ -28,6 +28,11 @@
     <%- include('includes/servers', {servers, md_to_html}); %>
     <% } %>
     <div class="toc">
+      <% extra_pages.forEach(page => { %>
+      <div class="entry">
+        <span class="name"><%= page.name %></span>
+      </div>
+      <% }); %>
       <% paths.forEach(path => { %>
       <div class="entry">
         <span class="path"><%= path.path %></span>
@@ -38,6 +43,19 @@
       <% }); %>
     </div>
   </div>
+
+  <% extra_pages.forEach(page => { %>
+  <div id="<% page.slug %>" class="x-page">
+    <h2>
+      <%= page.name %>
+    </h2>
+    <% if (page.content) { %>
+    <div class="description">
+      <%- md_to_html(page.content) %>
+    </div>
+    <% } %>
+  </div>
+  <% }); %>
 
   <% paths.forEach(path => { %>
   <div class="path">

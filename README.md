@@ -27,7 +27,7 @@ The OpenAPI file is your OpenAPI file.
 
 The Output file is where the generated HTML will go.
 
-`--tags` refers to the tags that can be assigned to [OpenAPI operations](https://spec.openapis.org/oas/v3.1.0#operation-object), and to our custom markdown pages as defined our [`x-pages` extension](openapi-extensions.md).
+`--tags` refers to the tags that can be assigned to [OpenAPI operations](https://spec.openapis.org/oas/v3.1.0#operation-object), and to our custom markdown pages as defined our [`x-pages` extension](openapi-extensions.md#x-pages).
 
 ## License
 

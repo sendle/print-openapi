@@ -54,6 +54,9 @@ p {
 
 .toc {
   margin-top: 1.5em;
+  border-left: rgba(30, 28, 28, 0.62) solid 2px;
+  padding: .5em 0 .5em 1.2em;
+
   .entry {
     display: block;
 
@@ -99,7 +102,7 @@ p {
   }
 }
 
-body > .path {
+body > .path, body > .x-page {
   @media print {
     break-before: page;
   }
