@@ -13,11 +13,11 @@ export interface Page {
   tags: string[],
   content: string,
   pages: Page[],
-  aaa: string,
 }
 
 export async function convertToHTML(
-  openapiInput: OpenAPI.Document
+  openapiInput: OpenAPI.Document,
+  tags: string[],
 ): Promise<string> {
   // get info from the openapi file
   const doc = new Oas(JSON.parse(JSON.stringify(openapiInput)));
