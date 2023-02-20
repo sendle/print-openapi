@@ -2,6 +2,12 @@
 
 These are the extensions which we support and our own brand new ones!
 
+## Existing extensions
+
+These are the extensions which we support:
+
+- [x-unofficialSpec](https://github.com/APIs-guru/openapi-directory/wiki/specification-extensions#x-unofficialspec): Indicates the definition is produced by a third-party.
+
 ## x-pages
 
 This extension allows arbitrary markdown pages with extra documentation.

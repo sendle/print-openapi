@@ -136,6 +136,7 @@ export async function convertToHTML(
     style: css.css,
     paths,
     extra_pages: x_pages,
+    unofficial: (doc.getDefinition().info as any)['x-unofficialSpec'] !== undefined,
     md_to_html: html,
     hljs,
   });

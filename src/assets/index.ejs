@@ -14,7 +14,9 @@
 
 <body>
   <div class="front-matter">
-    <h1><%= title %></h1>
+    <h1><%= title %>
+      <% if (unofficial) { %><span class="unofficial">Unofficial</span><% } %>
+    </h1>
     <%- description %>
     <% if (externalDocs) { %>
     <hr>
