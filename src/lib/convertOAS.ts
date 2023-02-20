@@ -12,7 +12,7 @@ export interface Page {
   slug: string,
   tags: string[],
   content: string,
-  pages: Page[],
+  // pages: Page[],
 }
 
 export async function convertToHTML(
@@ -32,13 +32,22 @@ export async function convertToHTML(
 
   if (doc.hasExtension('x-pages') && Array.isArray(doc.getExtension('x-pages'))) {
     const pages = doc.getExtension('x-pages') as Page[];
-    
+
     pages.forEach(page => {
       if (page.slug === undefined) {
         //TODO: slugify and keep track of all existing page slugs used
         page.slug = 'todo';
       }
-      x_pages.push(page);
+      if (tags.length === 0) {
+        x_pages.push(page);
+      } else {
+        for (const tag of page.tags) {
+          if (tags.includes(tag)) {
+            x_pages.push(page)
+            break
+          }
+        }
+      }
     });
   }
 
@@ -49,6 +58,16 @@ export async function convertToHTML(
     const operations: any[] = [];
     let pathName = '';
     Object.values(path).forEach((operation) => {
+      // make sure operation can be documented
+      if (tags.length > 0) {
+        for (const tag_info of operation.getTags()) {
+          if (!tags.includes(tag_info.name)) {
+            // it can't be, skip it
+            return
+          }
+        }
+      }
+
       const param_types: { [name: string]: number } = {
         header: 0,
         path: 0,
@@ -97,10 +116,12 @@ export async function convertToHTML(
       // console.dir(responses);
       // console.dir(operation);
     });
-    paths.push({
-      path: pathName,
-      operations,
-    });
+    if (operations.length > 0) {
+      paths.push({
+        path: pathName,
+        operations,
+      });
+    }
   });
 
   // compile our sass
