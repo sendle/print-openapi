@@ -17,17 +17,24 @@ The tool uses the OpenAPI tooling released by [ReadMe](https://github.com/readme
 ## Usage
 
 ```
-print-openapi <openapi-file> <output-file>
+$ print-openapi export-html [options] <openapi-path> <html-path>
+exports a printable HTML file.
+
+$ print-openapi deref [options] <openapi-path> <output-json-path>
+exports a new OpenAPI file with all references resolved.
+
+Note: deref intentionally removes all schemas to ensure that internal
+info isn't leaked in the new OpenAPI file.
 
 Options:
-  --tags=list,of,tags      Only these endpoints/pages will be included in the output.
+  --tag=tag1   -t tag2    Only these operations/pages will be included in the output.
 ```
 
-The OpenAPI file is your OpenAPI file.
+### Tags
 
-The Output file is where the generated HTML will go.
+`--tag` and `-t` refer to the tags that can be assigned to [OpenAPI operations](https://spec.openapis.org/oas/v3.1.0#operation-object), and to our custom markdown pages as defined our [`x-pages` extension](openapi-extensions.md#x-pages).
 
-`--tags` refers to the tags that can be assigned to [OpenAPI operations](https://spec.openapis.org/oas/v3.1.0#operation-object), and to our custom markdown pages as defined our [`x-pages` extension](openapi-extensions.md#x-pages).
+When using `print-openapi`, by default all pages and operations are exported. However, when tags are specified the tool will only include pages and operations with those tags. See the example specs in [`/examples/`](examples/).
 
 ## License
 
