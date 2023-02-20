@@ -35,7 +35,7 @@ async function showOASTags(openapiPath: string) {
     });
 }
 
-function postProcessDefinition(definition: OpenAPI.Document, tags: string[]) {
+function postProcessDefinition(definition: OpenAPI.Document, tags: string[]): OpenAPI.Document {
   if (tags.length === 0) {
     // we don't need to do anything
     return definition
@@ -60,12 +60,12 @@ function postProcessDefinition(definition: OpenAPI.Document, tags: string[]) {
     const new_pages: Page[] = [];
 
     old_pages.forEach(page => {
-      page.tags.forEach(tag => {
+      for (const tag of page.tags) {
         if (tags.includes(tag)) {
           new_pages.push(page);
-          return;
+          break;
         }
-      });
+      }
     });
 
     // console.log(`pages: [${old_pages.map(page => page.name)}] => [${new_pages.map(page => page.name)}]`);
@@ -80,12 +80,12 @@ function postProcessDefinition(definition: OpenAPI.Document, tags: string[]) {
 
       for (const [oper_name, oper_info] of Object.entries(operations)) {
         if ((oper_info as any).tags !== undefined) {
-          ((oper_info as any).tags as string[]).forEach(tag => {
+          for (const tag of ((oper_info as any).tags as string[])) {
             if (tags.includes(tag)) {
               new_operations[oper_name] = oper_info
-              return
+              break
             }
-          });
+          }
         }
       }
 
