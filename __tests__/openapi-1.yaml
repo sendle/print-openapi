@@ -1,0 +1,160 @@
+# Sample BBS Internal API Endpoints + Details
+#
+# This has examples of print-api's tag handling and the like.
+#
+# try exporting a HTML file with the `moderation` tag and another with the `system-messages` tag!
+
+openapi: 3.1.0
+
+info:
+  title: BBS Internal API
+  description: |
+    This file contains information about the BBS internal API.
+  termsOfService: https://bbs.example.com/terms
+  contact:
+    email: api@example.com
+  version: 1.0.0
+  x-unofficialSpec: true
+
+externalDocs:
+  description: |
+    Also refer to our public API documentation:
+  url: https://bbs.example.com/api-docs
+
+servers:
+  - url: https://sandbox.bbs.example.com
+    description: Sandbox Server
+  - url: https://api.bbs.example.com
+    description: Production Server
+
+tags:
+  - name: moderation
+    description: API used by moderators and admins.
+  - name: system-messages
+    description: Post system messages.
+
+x-pages:
+  - name: Moderation overview
+    slug: moderation
+    tags:
+      - moderation
+    content: |
+      Moderators have power over the message board, including the power to remove posts that violate the [terms of service](https://bbs.example.com/terms). As a member of moderation staff you can also temporarily or permanently restrict a user from posting.
+
+      Here's an overview of your powers:
+
+      - Deleting messages and threads.
+      - Removing media on posts.
+      - Redacting messages and media.
+
+      Talk to your server administrator before using the `redact` feature, as some server versions crash when you try to redact content on them.
+  - name: System messages
+    slug: system-messages
+    tags:
+      - moderation
+      - system-messages
+    content: |
+      Messages sent by the system are shown to all users currently online, even if they are not on the message page.
+
+      Let me tell you how to construct nice system messages. Make sure they are clear, okay? Not doing so sure would be bad, and confusing for users!
+
+paths:
+  /v1/messages/system/drafts:
+    get:
+      operationId: getDraftSystemMessages
+      summary: Get all draft system messages
+      description: |
+        Returns all draft system messages.
+
+        These are messages that have been uploaded to the `moderation` proposed section, but have not yet been posted.
+      tags:
+        - system-messages
+      security:
+        - basicAuth: []
+      responses:
+        '200':
+          description: |
+            Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SystemMessage'
+                description: |
+                  List of system message drafts.
+              example:
+                [
+                  {
+                    "title": "Upcoming Downtime 😔",
+                    "content": "Please be aware that there is upcoming downtime. Thanks for flying BBS Airlines!",
+                    "author": null
+                  }
+                ]
+        '500':
+          $ref: '#/components/responses/ErrorInternal'
+        '503':
+          $ref: '#/components/responses/ErrorNotAvailable'
+
+components:
+  schemas:
+    SystemMessage:
+      type: object
+      description: |
+        A special type of message sent by the system or moderation staff.
+      properties:
+        title:
+          description: |
+            Message title. **Should be under 40 chars** due to display limitations on the mobile app.
+          type: string
+          maxLength: 200
+        content:
+          description: |
+            Content of the message. Markdown.
+          type: string
+          minLength: 1
+          maxLength: 4096
+        AuthorId:
+          description: |
+            ID of the user that's marked as the author of the system message.
+
+            If not given or `null`, this message will show as being sent from `System` instead of a single user.
+          type: string
+          format: uuid
+          nullable: true
+      required:
+        - title
+        - content
+
+  responses:
+    ErrorInternal:
+      description: |
+        Indicates that an unhandled error has occured with the BBS API. We may have more information on the [BBS Status page](https://status.example.com/). Contact [support@bbs.example.com](mailto:support@bbs.example.com) if the problem persists.
+
+    ErrorNotAvailable:
+      description: |
+        Indicates that the BBS is temporarily offline for maintenance or upgrades. We may have more information on the [BBS Status page](https://status.example.com/).
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error_code:
+                # referencing an external file
+                $ref: './openapi-2.yaml#/components/schemas/ErrorCode'
+              error_description:
+                description: |
+                  Human-readable error description
+                type: string
+          example:
+            {
+              "error": "bbs_offline",
+              "error_description": "The BBS is temporarily unavailable! See https://status.example.com/ for more information."
+            }
+
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: |
+        These are your BBS API credentials.

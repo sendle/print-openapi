@@ -1,0 +1,30 @@
+# Sample OpenAPI file that can be imported from
+
+openapi: 3.1.0
+
+info:
+  title: BBS Internal API
+  description: |
+    This file contains information about the BBS internal API.
+  termsOfService: https://bbs.example.com/terms
+  contact:
+    email: api@example.com
+  version: 1.0.0
+  x-unofficialSpec: true
+
+servers:
+  - url: https://sandbox.bbs.example.com
+    description: Sandbox Server
+  - url: https://api.bbs.example.com
+    description: Production Server
+
+components:
+  schemas:
+    ErrorCode:
+      description: |
+        Machine-readable error code.
+      type: string
+      enum:
+        - bbs_offline
+        - hosting_cost_too_high
+        - legal_reasons
