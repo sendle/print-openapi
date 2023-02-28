@@ -130,6 +130,9 @@ async function derefOAS(openapiPath: string, outputPath: string, tags: string[])
       if ((definition as any).components !== undefined && (definition as any).components.schemas !== undefined) {
         delete (definition as any).components.schemas;
       }
+      if ((definition as any).components !== undefined && (definition as any).components.responses !== undefined) {
+        delete (definition as any).components.responses;
+      }
 
       // output the pretty openapi file
       writeFile(outputPath, JSON.stringify(definition, null, 2), (err) => {
