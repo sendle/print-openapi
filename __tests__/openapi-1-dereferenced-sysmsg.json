@@ -1,0 +1,149 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "BBS Internal API",
+    "description": "This file contains information about the BBS internal API.\n",
+    "termsOfService": "https://bbs.example.com/terms",
+    "contact": {
+      "email": "api@example.com"
+    },
+    "version": "1.0.0",
+    "x-unofficialSpec": true
+  },
+  "externalDocs": {
+    "description": "Also refer to our public API documentation:\n",
+    "url": "https://bbs.example.com/api-docs"
+  },
+  "servers": [
+    {
+      "url": "https://sandbox.bbs.example.com",
+      "description": "Sandbox Server"
+    },
+    {
+      "url": "https://api.bbs.example.com",
+      "description": "Production Server"
+    }
+  ],
+  "tags": [
+    {
+      "name": "system-messages",
+      "description": "Post system messages."
+    }
+  ],
+  "x-pages": [
+    {
+      "name": "System messages",
+      "slug": "system-messages",
+      "tags": [
+        "moderation",
+        "system-messages"
+      ],
+      "content": "Messages sent by the system are shown to all users currently online, even if they are not on the message page.\n\nLet me tell you how to construct nice system messages. Make sure they are clear, okay? Not doing so sure would be bad, and confusing for users!\n"
+    }
+  ],
+  "paths": {
+    "/v1/messages/system/drafts": {
+      "get": {
+        "operationId": "getDraftSystemMessages",
+        "summary": "Get all draft system messages",
+        "description": "Returns all draft system messages.\n\nThese are messages that have been uploaded to the `moderation` proposed section, but have not yet been posted.\n",
+        "tags": [
+          "system-messages"
+        ],
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "description": "A special type of message sent by the system or moderation staff.\n",
+                    "properties": {
+                      "title": {
+                        "description": "Message title. **Should be under 40 chars** due to display limitations on the mobile app.\n",
+                        "type": "string",
+                        "maxLength": 200
+                      },
+                      "content": {
+                        "description": "Content of the message. Markdown.\n",
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 4096
+                      },
+                      "AuthorId": {
+                        "description": "ID of the user that's marked as the author of the system message.\n\nIf not given or `null`, this message will show as being sent from `System` instead of a single user.\n",
+                        "type": "string",
+                        "format": "uuid",
+                        "nullable": true
+                      }
+                    },
+                    "required": [
+                      "title",
+                      "content"
+                    ]
+                  },
+                  "description": "List of system message drafts.\n"
+                },
+                "example": [
+                  {
+                    "title": "Upcoming Downtime 😔",
+                    "content": "Please be aware that there is upcoming downtime. Thanks for flying BBS Airlines!",
+                    "author": null
+                  }
+                ]
+              }
+            }
+          },
+          "500": {
+            "description": "Indicates that an unhandled error has occured with the BBS API. We may have more information on the [BBS Status page](https://status.example.com/). Contact [support@bbs.example.com](mailto:support@bbs.example.com) if the problem persists.\n"
+          },
+          "503": {
+            "description": "Indicates that the BBS is temporarily offline for maintenance or upgrades. We may have more information on the [BBS Status page](https://status.example.com/).\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error_code": {
+                      "description": "Machine-readable error code.\n",
+                      "type": "string",
+                      "enum": [
+                        "bbs_offline",
+                        "hosting_cost_too_high",
+                        "legal_reasons"
+                      ]
+                    },
+                    "error_description": {
+                      "description": "Human-readable error description\n",
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "bbs_offline",
+                  "error_description": "The BBS is temporarily unavailable! See https://status.example.com/ for more information."
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "basicAuth": {
+        "type": "http",
+        "scheme": "basic",
+        "description": "These are your BBS API credentials.\n"
+      }
+    }
+  }
+}

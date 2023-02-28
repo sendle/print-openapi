@@ -6,6 +6,10 @@ import path from 'path';
 import sass from 'sass';
 import { ResponseObject } from 'oas/dist/rmoas.types';
 import hljs from 'highlight.js';
+import OASNormalize from 'oas-normalize';
+import { writeFile } from 'fs';
+import { cwd, chdir } from 'process';
+import { dirname } from 'path';
 
 export interface Page {
   name: string,
@@ -140,4 +144,119 @@ export async function convertToHTML(
     md_to_html: html,
     hljs,
   });
+}
+
+function postProcessDefinition(definition: OpenAPI.Document, tags: string[]): OpenAPI.Document {
+  if (tags.length === 0) {
+    // we don't need to do anything
+    return definition
+  }
+
+  // only include allowed tags in tag list, to not leak internal info
+  if (definition.tags) {
+    const new_tag_infos: any[] = [];
+
+    definition.tags.forEach(tag_info => {
+      if (tags.includes(tag_info.name)) {
+        new_tag_infos.push(tag_info);
+      }
+    });
+
+    definition.tags = new_tag_infos;
+  }
+
+  // only include pages with the given tags
+  if ((definition as any)["x-pages"] !== undefined) {
+    const old_pages = (definition as any)["x-pages"] as Page[]
+    const new_pages: Page[] = [];
+
+    old_pages.forEach(page => {
+      for (const tag of page.tags) {
+        if (tags.includes(tag)) {
+          new_pages.push(page);
+          break;
+        }
+      }
+    });
+
+    // console.log(`pages: [${old_pages.map(page => page.name)}] => [${new_pages.map(page => page.name)}]`);
+
+    (definition as any)["x-pages"] = new_pages;
+  }
+
+  // only include operations with the given tags
+  if (definition.paths !== undefined) {
+    for (const [path_name, operations] of Object.entries(definition.paths)) {
+      const new_operations: any = {};
+
+      for (const [oper_name, oper_info] of Object.entries(operations)) {
+        if ((oper_info as any).tags !== undefined) {
+          for (const tag of ((oper_info as any).tags as string[])) {
+            if (tags.includes(tag)) {
+              new_operations[oper_name] = oper_info
+              break
+            }
+          }
+        }
+      }
+
+      // console.log(`${path_name}: [${Object.keys(operations)}] => [${Object.keys(new_operations)}]`)
+
+      if (Object.keys(new_operations).length > 0) {
+        definition.paths[path_name] = new_operations;
+      } else {
+        // only share used paths :)
+        delete definition.paths[path_name];
+      }
+    }
+  }
+
+  return definition;
+}
+
+export async function derefOAS(openapiPath: string, outputPath: string, tags: string[], callback?: Function) {
+  // load openapi spec
+  const oasLoader = new OASNormalize(openapiPath, {
+    enablePaths: true,
+    colorizeErrors: true,
+  });
+
+  // temporarily change to folder the openapi file is in so that we can deref
+  //  all the refs in it properly
+  const oldcwd = cwd();
+  chdir(dirname(openapiPath));
+
+  // here we deref instead of bundle because: tags mean we could include internal components
+  //  if we just bundle. when we deref we can remove all component schemas for safety.
+  oasLoader
+    .deref()
+    .then(async (definition) => {
+      // move back to the original working directory we were executed in
+      chdir(oldcwd);
+
+      // process tags
+      definition = postProcessDefinition(definition, tags);
+
+      // remove all schemas because we can't go chase down whether every schema is used given the current tags
+      if ((definition as any).components !== undefined && (definition as any).components.schemas !== undefined) {
+        delete (definition as any).components.schemas;
+      }
+      if ((definition as any).components !== undefined && (definition as any).components.responses !== undefined) {
+        delete (definition as any).components.responses;
+      }
+
+      // output the pretty openapi file
+      writeFile(outputPath, JSON.stringify(definition, null, 2), (err) => {
+        if (err) {
+          console.error(err);
+        }
+        
+        if (callback) {
+          callback();
+        }
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 }
