@@ -1,10 +1,10 @@
-# Print OpenAPI [![NPM Package](https://img.shields.io/npm/v/print-openapi)](https://www.npmjs.com/package/print-openapi) [![MIT License](https://img.shields.io/npm/l/print-openapi)](./LICENSE)
+# Print OpenAPI [![NPM Package](https://img.shields.io/npm/v/print-openapi)](https://www.npmjs.com/package/print-openapi) [![MIT License](https://img.shields.io/npm/l/print-openapi)](./LICENSE) [![Tests](https://github.com/sendle/print-openapi/actions/workflows/ci.yml/badge.svg)][https://github.com/sendle/print-openapi/actions/workflows/ci.yml]
 
 This tool takes an OpenAPI file and spits out a printable, static HTML file. Since most browsers have a 'Print to PDF' function, you can use this to generate nice PDFs of your OpenAPI specs.
 
 **Why?**
 
-Most OpenAPI tooling focuses on creating fancy displays that you can click on, send API requests with, etc. But sometimes you just need a plain, easily-readable, and static copy of your API docs. We needed that here at [Sendle](https://www.sendle.com/), so we built this tool!
+Most OpenAPI tooling focuses on creating fancy displays that you can click on, send API requests with, etc. But sometimes you just need a plain, easily-readable, and static copy of your API docs. We needed that here at [Sendle](https://www.sendle.com/) for our internal documentation, so we built this tool!
 
 **How?**
 
@@ -12,23 +12,34 @@ The tool uses the OpenAPI tooling released by [ReadMe](https://github.com/readme
 
 ## Installation
 
-...
+```
+$ npm install -g print-openapi
+```
 
 ## Usage
 
 ```
-$ print-openapi export-html [options] <openapi-path> <html-path>
-exports a printable HTML file.
-
-$ print-openapi deref [options] <openapi-path> <output-json-path>
-exports a new OpenAPI file with all references resolved.
-
-Note: deref intentionally removes all schemas to ensure that internal
-info isn't leaked in the new OpenAPI file.
-
-Options:
-  --tag=tag1   -t tag2    Only these operations/pages will be included in the output.
+$ print-openapi export-html bbs-openapi.yaml bbs-openapi.html
 ```
+
+Generate a printable HTML file from the `bbs-openapi.yaml` OpenAPI file, including all paths and pages.
+
+```
+$ print-openapi export-html --tag moderation bbs-openapi.yaml bbs-moderation-openapi.html
+```
+
+Generate a printable HTML file from the `bbs-openapi.yaml` OpenAPI file, only including paths and pages that have the `moderation` tag.
+
+
+```
+$ print-openapi deref --tag system-messages --tag sysmsgv2 bbs-openapi.yaml ../sysmsg.openapi.json
+```
+
+Create a new OpenAPI file called `sysmsg.openapi.json`. This file only contains the paths and pages from `bbs-openapi.yaml` with either the `system-messages` or `sysmsgv2` tags.
+
+### Markdown pages
+
+We've defined the [`x-pages` extension](openapi-extensions.md#x-pages), which lets you define arbitrary markdown pages to be displayed on the exported HTML files. See the bottom of that extension page for our future plans with it!
 
 ### Tags
 
