@@ -24,12 +24,15 @@ $ print-openapi export-html bbs-openapi.yaml bbs-openapi.html
 
 Generate a printable HTML file from the `bbs-openapi.yaml` OpenAPI file, including all paths and pages.
 
+-----
+
 ```
 $ print-openapi export-html --tag moderation bbs-openapi.yaml bbs-moderation-openapi.html
 ```
 
 Generate a printable HTML file from the `bbs-openapi.yaml` OpenAPI file, only including paths and pages that have the `moderation` tag.
 
+-----
 
 ```
 $ print-openapi deref --tag system-messages --tag sysmsgv2 bbs-openapi.yaml ../sysmsg.openapi.json
