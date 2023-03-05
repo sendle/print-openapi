@@ -1,15 +1,14 @@
-import type { OpenAPI } from 'openapi-types';
-import Oas from 'oas';
 import { html } from '@readme/markdown';
 import ejs from 'ejs';
-import path from 'path';
-import sass from 'sass';
-import { ResponseObject } from 'oas/dist/rmoas.types';
-import hljs from 'highlight.js';
-import OASNormalize from 'oas-normalize';
 import { writeFile } from 'fs';
-import { cwd, chdir } from 'process';
-import { dirname } from 'path';
+import hljs from 'highlight.js';
+import Oas from 'oas';
+import OASNormalize from 'oas-normalize';
+import { ResponseObject } from 'oas/dist/rmoas.types';
+import type { OpenAPI } from 'openapi-types';
+import path, { dirname } from 'path';
+import { chdir, cwd } from 'process';
+import sass from 'sass';
 
 export interface Page {
   name: string,
