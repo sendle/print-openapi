@@ -42,6 +42,7 @@
     "@readme/variable": "^15.1.2",
     "@tippyjs/react": "^4.2.6",
     "cmd-ts": "^0.11.0",
+    "console-table-printer": "^2.11.1",
     "ejs": "^3.1.8",
     "highlight.js": "^11.7.0",
     "oas": "^20.4.0",

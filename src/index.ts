@@ -3,6 +3,7 @@ import { ExistingPath } from 'cmd-ts/batteries/fs';
 import OASNormalize from 'oas-normalize';
 import { cwd, chdir } from 'process';
 import { dirname } from 'path';
+import { printTable } from 'console-table-printer';
 
 import { loadOASToHTML, derefOAS } from './lib/convertOAS';
 
@@ -21,12 +22,15 @@ async function showOASTags(openapiPath: string) {
   oasLoader
     .deref()
     .then(async (definition) => {
-      let info = [['Tag', 'Description']]
+      let info: any[] = []
       definition.tags?.forEach(tag => {
-        info.push([tag.name, tag.description || '']);
+        info.push({
+          Tag: tag.name,
+          Description: tag.description || ''
+        });
       });
       // this looks bad, but oh well
-      console.table(info);
+      printTable(info);
     })
     .catch((err) => {
       console.log(err);
