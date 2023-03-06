@@ -10,6 +10,11 @@ import path, { dirname } from 'path';
 import { chdir, cwd } from 'process';
 import sass from 'sass';
 
+export interface Tag {
+  Tag: string,
+  Description: string,
+}
+
 export interface Page {
   name: string,
   slug: string,
@@ -290,6 +295,37 @@ export async function derefOAS(openapiPath: string, outputPath: string, tags: st
           callback();
         }
       });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
+
+export async function getOASTags(openapiPath: string, callback?: (tags: Tag[]) => void) {
+  // load openapi spec
+  const oasLoader = new OASNormalize(openapiPath, {
+    enablePaths: true,
+    colorizeErrors: true,
+  });
+
+  // temporarily change to folder the openapi file is in so that we can deref
+  //  all the refs in it properly
+  const oldcwd = cwd();
+  chdir(dirname(openapiPath));
+
+  oasLoader
+    .deref()
+    .then(async (definition) => {
+      let tags: Tag[] = []
+      definition.tags?.forEach(tag => {
+        tags.push({
+          Tag: tag.name,
+          Description: tag.description || ''
+        });
+      });
+      if (callback) {
+        callback(tags);
+      }
     })
     .catch((err) => {
       console.log(err);

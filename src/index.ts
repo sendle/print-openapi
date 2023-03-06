@@ -5,36 +5,12 @@ import { cwd, chdir } from 'process';
 import { dirname } from 'path';
 import { printTable } from 'console-table-printer';
 
-import { loadOASToHTML, derefOAS } from './lib/convertOAS';
+import { loadOASToHTML, derefOAS, getOASTags } from './lib/convertOAS';
 
 async function showOASTags(openapiPath: string) {
-  // load openapi spec
-  const oasLoader = new OASNormalize(openapiPath, {
-    enablePaths: true,
-    colorizeErrors: true,
+  getOASTags(openapiPath, tags => {
+    printTable(tags);
   });
-
-  // temporarily change to folder the openapi file is in so that we can deref
-  //  all the refs in it properly
-  const oldcwd = cwd();
-  chdir(dirname(openapiPath));
-
-  oasLoader
-    .deref()
-    .then(async (definition) => {
-      let info: any[] = []
-      definition.tags?.forEach(tag => {
-        info.push({
-          Tag: tag.name,
-          Description: tag.description || ''
-        });
-      });
-      // this looks bad, but oh well
-      printTable(info);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
 }
 
 const app = command({
