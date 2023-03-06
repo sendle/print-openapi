@@ -1,7 +1,6 @@
 import { command, run, string, positional, flag, boolean, multioption, array } from 'cmd-ts';
 import { ExistingPath } from 'cmd-ts/batteries/fs';
 import OASNormalize from 'oas-normalize';
-import { writeFile } from 'fs';
 import { cwd, chdir } from 'process';
 import { dirname } from 'path';
 
