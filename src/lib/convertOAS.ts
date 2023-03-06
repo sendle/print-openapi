@@ -15,6 +15,11 @@ export interface Tag {
   Description: string,
 }
 
+export interface PathAndTags {
+  path: string,
+  tags: string[],
+}
+
 export interface Page {
   name: string,
   slug: string,
@@ -254,6 +259,40 @@ export async function loadOASToHTML(openapiPath: string, htmlPath: string, tags:
     });
 }
 
+export async function loadOASToMultipleHTML(openapiPath: string, pathTagList: PathAndTags[]) {
+  // load openapi spec
+  const oasLoader = new OASNormalize(openapiPath, {
+    enablePaths: true,
+    colorizeErrors: true,
+  });
+
+  // temporarily change to folder the openapi file is in so that we can deref
+  //  all the refs in it properly
+  const oldcwd = cwd();
+  chdir(dirname(openapiPath));
+
+  oasLoader
+    .deref()
+    .then(async (definition) => {
+      // move back to the original working directory we were executed in
+      chdir(oldcwd);
+
+      // convert and output them
+      pathTagList.forEach(async info => {
+        const content = await convertToHTML(definition, info.tags);
+
+        writeFile(info.path, content, (err) => {
+          if (err) {
+            console.error(err);
+          }
+        });
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
+
 export async function derefOAS(openapiPath: string, outputPath: string, tags: string[], callback?: Function) {
   // load openapi spec
   const oasLoader = new OASNormalize(openapiPath, {
@@ -301,7 +340,7 @@ export async function derefOAS(openapiPath: string, outputPath: string, tags: st
     });
 }
 
-export async function getOASTags(openapiPath: string, callback?: (tags: Tag[]) => void) {
+export async function derefOASMultiple(openapiPath: string, pathTagList: PathAndTags[]) {
   // load openapi spec
   const oasLoader = new OASNormalize(openapiPath, {
     enablePaths: true,
@@ -313,21 +352,64 @@ export async function getOASTags(openapiPath: string, callback?: (tags: Tag[]) =
   const oldcwd = cwd();
   chdir(dirname(openapiPath));
 
+  // here we deref instead of bundle because: tags mean we could include internal components
+  //  if we just bundle. when we deref we can remove all component schemas for safety.
   oasLoader
     .deref()
     .then(async (definition) => {
-      let tags: Tag[] = []
-      definition.tags?.forEach(tag => {
-        tags.push({
-          Tag: tag.name,
-          Description: tag.description || ''
+      // move back to the original working directory we were executed in
+      chdir(oldcwd);
+
+      // convert and output them
+      pathTagList.forEach(async info => {
+        // process tags
+        const newDef = postProcessDefinition(definition, info.tags);
+
+        // remove all schemas because we can't go chase down whether every schema is used given the current tags
+        if ((newDef as any).components !== undefined && (newDef as any).components.schemas !== undefined) {
+          delete (newDef as any).components.schemas;
+        }
+        if ((newDef as any).components !== undefined && (newDef as any).components.responses !== undefined) {
+          delete (newDef as any).components.responses;
+        }
+
+        // output the pretty openapi file
+        writeFile(info.path, JSON.stringify(newDef, null, 2), (err) => {
+          if (err) {
+            console.error(err);
+          }
         });
       });
-      if (callback) {
-        callback(tags);
-      }
     })
     .catch((err) => {
       console.log(err);
     });
+}
+
+export async function getOASTags(openapiPath: string): Promise<Tag[]> {
+  // load openapi spec
+  const oasLoader = new OASNormalize(openapiPath, {
+    enablePaths: true,
+    colorizeErrors: true,
+  });
+
+  // temporarily change to folder the openapi file is in so that we can deref
+  //  all the refs in it properly
+  const oldcwd = cwd();
+  chdir(dirname(openapiPath));
+  
+  const definition = await oasLoader.deref();
+  
+  // move back to the original working directory we were executed in
+  chdir(oldcwd);
+
+  let tags: Tag[] = []
+  definition.tags?.forEach(tag => {
+    tags.push({
+      Tag: tag.name,
+      Description: tag.description || ''
+    });
+  });
+
+  return tags;
 }

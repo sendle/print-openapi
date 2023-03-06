@@ -1,16 +1,36 @@
 import { command, run, string, positional, flag, boolean, multioption, array } from 'cmd-ts';
 import { ExistingPath } from 'cmd-ts/batteries/fs';
-import OASNormalize from 'oas-normalize';
-import { cwd, chdir } from 'process';
-import { dirname } from 'path';
+import { exit } from 'process';
 import { printTable } from 'console-table-printer';
+import slugify from 'slugify';
 
-import { loadOASToHTML, derefOAS, getOASTags } from './lib/convertOAS';
+import { loadOASToHTML, loadOASToMultipleHTML, derefOAS, derefOASMultiple, getOASTags, PathAndTags } from './lib/convertOAS';
 
 async function showOASTags(openapiPath: string) {
-  getOASTags(openapiPath, tags => {
-    printTable(tags);
+  const tags = await getOASTags(openapiPath);
+
+  printTable(tags);
+}
+
+async function getPathPerTag(openapiPath: string, outputPath: string, inputTags: string[]): Promise<PathAndTags[]> {
+  if (!outputPath.includes('<tag>')) {
+    console.error('Output path must include "<tag>" for substitution');
+    exit(1);
+  }
+
+  const tags = await getOASTags(openapiPath);
+
+  const pandt: PathAndTags[] = [];
+  tags.forEach(tag => {
+    if (inputTags.length === 0 || inputTags.includes(tag.Tag)) {
+      pandt.push({
+        path: outputPath.replace('<tag>', slugify(tag.Tag)),
+        tags: [tag.Tag]
+      });
+    }
   });
+
+  return pandt
 }
 
 const app = command({
@@ -55,15 +75,24 @@ info isn't leaked in the new OpenAPI file.`,
       description: 'Tag to include in the output file. Can be given multiple times for multiple tags.',
     }),
   },
-  handler: ({ subcommand, openapiPath, outputPath, showTags, tags }) => {
+  handler: async ({ subcommand, openapiPath, outputPath, showTags, tags }) => {
     if (showTags) {
       showOASTags(openapiPath);
     } else if (subcommand === 'deref') {
       derefOAS(openapiPath, outputPath, tags);
+    } else if (subcommand === 'deref-per-tag') {
+      const pathTagList: PathAndTags[] = await getPathPerTag(openapiPath, outputPath, tags);
+
+      derefOASMultiple(openapiPath, pathTagList);
     } else if (subcommand === 'export-html') {
       loadOASToHTML(openapiPath, outputPath, tags);
+    } else if (subcommand === 'export-html-per-tag') {
+      const pathTagList: PathAndTags[] = await getPathPerTag(openapiPath, outputPath, tags);
+
+      loadOASToMultipleHTML(openapiPath, pathTagList);
     } else {
       console.error('Subcommand not recognised')
+      exit(1);
     }
   },
 });
