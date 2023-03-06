@@ -37,7 +37,7 @@ export async function convertToHTML(
     const pages = doc.getExtension('x-pages') as Page[];
 
     pages.forEach(page => {
-      if (page.slug === undefined) {
+      if (page.slug === undefined || page.slug === '') {
         //TODO: slugify and keep track of all existing page slugs used
         page.slug = 'todo';
       }
@@ -211,6 +211,42 @@ function postProcessDefinition(definition: OpenAPI.Document, tags: string[]): Op
   }
 
   return definition;
+}
+
+export async function loadOASToHTML(openapiPath: string, htmlPath: string, tags: string[], callback?: Function) {
+  // load openapi spec
+  const oasLoader = new OASNormalize(openapiPath, {
+    enablePaths: true,
+    colorizeErrors: true,
+  });
+
+  // temporarily change to folder the openapi file is in so that we can deref
+  //  all the refs in it properly
+  const oldcwd = cwd();
+  chdir(dirname(openapiPath));
+
+  oasLoader
+    .deref()
+    .then(async (definition) => {
+      // move back to the original working directory we were executed in
+      chdir(oldcwd);
+
+      // successfully dereferenced, now convert it
+      const content = await convertToHTML(definition, tags);
+
+      writeFile(htmlPath, content, (err) => {
+        if (err) {
+          console.error(err);
+        }
+
+        if (callback) {
+          callback();
+        }
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 }
 
 export async function derefOAS(openapiPath: string, outputPath: string, tags: string[], callback?: Function) {

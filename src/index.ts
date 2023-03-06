@@ -5,7 +5,7 @@ import { writeFile } from 'fs';
 import { cwd, chdir } from 'process';
 import { dirname } from 'path';
 
-import { convertToHTML, derefOAS } from './lib/convertOAS';
+import { loadOASToHTML, derefOAS } from './lib/convertOAS';
 
 async function showOASTags(openapiPath: string) {
   // load openapi spec
@@ -28,38 +28,6 @@ async function showOASTags(openapiPath: string) {
       });
       // this looks bad, but oh well
       console.table(info);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-}
-
-async function transformOASToHTML(openapiPath: string, htmlPath: string, tags: string[]) {
-  // load openapi spec
-  const oasLoader = new OASNormalize(openapiPath, {
-    enablePaths: true,
-    colorizeErrors: true,
-  });
-
-  // temporarily change to folder the openapi file is in so that we can deref
-  //  all the refs in it properly
-  const oldcwd = cwd();
-  chdir(dirname(openapiPath));
-
-  oasLoader
-    .deref()
-    .then(async (definition) => {
-      // move back to the original working directory we were executed in
-      chdir(oldcwd);
-
-      // successfully dereferenced, now convert it
-      const content = await convertToHTML(definition, tags);
-
-      writeFile(htmlPath, content, (err) => {
-        if (err) {
-          console.error(err);
-        }
-      });
     })
     .catch((err) => {
       console.log(err);
@@ -114,7 +82,7 @@ info isn't leaked in the new OpenAPI file.`,
     } else if (subcommand === 'deref') {
       derefOAS(openapiPath, outputPath, tags);
     } else if (subcommand === 'export-html') {
-      transformOASToHTML(openapiPath, outputPath, tags);
+      loadOASToHTML(openapiPath, outputPath, tags);
     } else {
       console.error('Subcommand not recognised')
     }
