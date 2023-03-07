@@ -27,6 +27,7 @@
   "devDependencies": {
     "@types/ejs": "^3.1.1",
     "@types/jest": "^29.4.0",
+    "@types/mime-types": "^2.1.1",
     "@types/node": "^18.11.18",
     "@types/tmp": "^0.2.3",
     "html-validator": "^6.0.1",
@@ -45,6 +46,7 @@
     "console-table-printer": "^2.11.1",
     "ejs": "^3.1.8",
     "highlight.js": "^11.7.0",
+    "mime-types": "^2.1.35",
     "oas": "^20.4.0",
     "oas-normalize": "^8.3.1",
     "openapi-types": "^12.1.0",

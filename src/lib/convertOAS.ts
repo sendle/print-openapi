@@ -1,7 +1,8 @@
 import { html } from '@readme/markdown';
 import ejs from 'ejs';
-import { writeFile } from 'fs';
+import { readFileSync, writeFile } from 'fs';
 import hljs from 'highlight.js';
+import mime from 'mime-types';
 import Oas from 'oas';
 import OASNormalize from 'oas-normalize';
 import { ResponseObject } from 'oas/dist/rmoas.types';
@@ -18,6 +19,14 @@ export interface Tag {
 export interface PathAndTags {
   path: string,
   tags: string[],
+}
+
+export interface Logo {
+  active: boolean,
+  mime: string,
+  content: string,
+  url: string,
+  altText: string,
 }
 
 export interface Page {
@@ -140,8 +149,40 @@ export async function convertToHTML(
   // compile our sass
   const css = sass.compile(path.join(__dirname, '../assets/style.scss'));
 
+  // get icon
+  const logo: Logo = {
+    active: false,
+    mime: "",
+    content: "",
+    url: "",
+    altText: "logo",
+  };
+  
+  const xLogo = (doc.getDefinition().info as any)['x-logo'];
+  if (xLogo) {
+    if (xLogo.altText) {
+      logo.altText = xLogo.altText;
+    }
+    if (xLogo.path) {
+      const lookedUpMime = mime.lookup(xLogo.path);
+      if (lookedUpMime) {
+        logo.active = true;
+        logo.mime = lookedUpMime;
+        logo.content = readFileSync(xLogo.path, {encoding: 'base64'});
+      } else {
+        throw Error('Could not find mime type for logo, try adding a file extension to the logo file');
+      }
+    } else if (xLogo.url) {
+      logo.active = true;
+      logo.url = xLogo.url;
+    } else {
+      throw Error('Logo defined but no path or url');
+    }
+  }
+
   // put it all together
   return ejs.renderFile(path.join(__dirname, '../assets/index.ejs'), {
+    logo,
     title: doc.getDefinition().info.title,
     description,
     externalDocs: doc.api.externalDocs,
@@ -238,11 +279,13 @@ export async function loadOASToHTML(openapiPath: string, htmlPath: string, tags:
   oasLoader
     .deref()
     .then(async (definition) => {
-      // move back to the original working directory we were executed in
-      chdir(oldcwd);
-
       // successfully dereferenced, now convert it
       const content = await convertToHTML(definition, tags);
+      
+      // move back to the original working directory we were executed in.
+      // only do it after convertToHTML because convertToHTML may load
+      //  file paths
+      chdir(oldcwd);
 
       writeFile(htmlPath, content, (err) => {
         if (err) {
@@ -274,12 +317,16 @@ export async function loadOASToMultipleHTML(openapiPath: string, pathTagList: Pa
   oasLoader
     .deref()
     .then(async (definition) => {
-      // move back to the original working directory we were executed in
-      chdir(oldcwd);
 
       // convert and output them
       pathTagList.forEach(async info => {
+        // in case we load a logo path in convertToHTML
+        chdir(dirname(openapiPath));
         const content = await convertToHTML(definition, info.tags);
+
+        // move back to the original working directory we were executed in
+        //  to export files properly
+        chdir(oldcwd);
 
         writeFile(info.path, content, (err) => {
           if (err) {

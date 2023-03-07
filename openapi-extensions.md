@@ -2,11 +2,34 @@
 
 These are the extensions which we support and our own brand new ones!
 
+
 ## Existing extensions
 
-These are the extensions which we support:
+These are the existing extensions we support:
 
 - [x-unofficialSpec](https://github.com/APIs-guru/openapi-directory/wiki/specification-extensions#x-unofficialspec): Indicates the definition is produced by a third-party.
+
+
+## x-logo
+
+This extension adds a logo to the documentation. It is inspired by the `x-logo` extensions described [by Redocly](https://github.com/Redocly/redoc/blob/main/docs/redoc-vendor-extensions.md#x-logo) and [by APIs.guru](https://github.com/APIs-guru/openapi-directory/wiki/specification-extensions#x-logo), but our version adds the `path` field.
+
+`x-logo` is the **Logo** object, described below.
+
+`x-logo` is a property of [the Info object](https://spec.openapis.org/oas/v3.1.0#info-object).
+
+### Logo Object
+
+_Fixed Fields_
+
+Either `url` or `path` MUST be provided. Giving both means undefined behaviour.
+
+| Field Name | Type | Description |
+| :-- | :-: | :-- |
+| url | `string` | **_REQUIRED if `path` is not present._** URL of the logo. SHOULD be loadable by a web browser. SHOULD be an absolute URL so the API definition is usable from any location. |
+| path | `string` | **_REQUIRED if `url` is not present._** Path to the logo file, relative to the OpenAPI file. |
+| altText | `string` | Text to use for alt tag on the logo. Defaults to 'logo' if not given. |
+
 
 ## x-pages
 

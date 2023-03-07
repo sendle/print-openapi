@@ -14,6 +14,10 @@ info:
   contact:
     email: api@example.com
   version: 1.0.0
+  x-logo:
+    path: icon.svg
+    # url: https://example.com/logo.png
+    altText: BBS Cloud Chat Systems Icon
   x-unofficialSpec: true
 
 externalDocs:

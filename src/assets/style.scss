@@ -446,6 +446,15 @@ body > .path, body > .x-page {
   }
 }
 
+.front-matter .logo {
+  @media screen {
+    margin-top: 1.34em;
+  }
+  img {
+    max-width: 100%;
+  }
+}
+
 // API server lists
 .front-matter table.servers {
   margin-left: -1em;
