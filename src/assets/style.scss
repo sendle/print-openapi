@@ -447,8 +447,10 @@ body > .path, body > .x-page {
 }
 
 .front-matter .logo {
-  @media screen {
-    margin-top: 1.34em;
+  padding: 1.34em 1em 0;
+  margin: 0 -1em;
+  &.withBackground {
+    padding-bottom: 1em;
   }
   img {
     max-width: 100%;

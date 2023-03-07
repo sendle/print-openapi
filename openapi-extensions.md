@@ -28,6 +28,7 @@ Either `url` or `path` MUST be provided. Giving both means undefined behaviour.
 | :-- | :-: | :-- |
 | url | `string` | **_REQUIRED if `path` is not present._** URL of the logo. SHOULD be loadable by a web browser. SHOULD be an absolute URL so the API definition is usable from any location. |
 | path | `string` | **_REQUIRED if `url` is not present._** Path to the logo file, relative to the OpenAPI file. |
+| backgroundColor | `string` | Background colour for the logo. CSS color ([#RRGGBB](https://en.wikipedia.org/wiki/Web_colors#Hex_triplet)). |
 | altText | `string` | Text to use for alt tag on the logo. Defaults to 'logo' if not given. |
 
 

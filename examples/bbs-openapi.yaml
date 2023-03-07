@@ -18,6 +18,7 @@ info:
     path: icon.svg
     # url: https://example.com/logo.png
     altText: BBS Cloud Chat Systems Icon
+    backgroundColor: "#ececf8"
   x-unofficialSpec: true
 
 externalDocs:

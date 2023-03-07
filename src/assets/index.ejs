@@ -14,7 +14,7 @@
 
 <body>
   <div class="front-matter">
-    <% if (logo.active) { %><div class="logo"><img <% if (logo.altText) { %>alt="<%= logo.altText %>"<% } %> src="<% if (logo.url) { %><%= encodeURI(logo.url) %><% } else { %>data:<%- logo.mime %>;base64,<%- logo.content %><% } %>"/></div><% } %>
+    <% if (logo.active) { %><div class="logo<% if (logo.background) { %> withBackground" style="background:<%= logo.background %>;<% } %>"><img <% if (logo.altText) { %>alt="<%= logo.altText %>"<% } %> src="<% if (logo.url) { %><%= encodeURI(logo.url) %><% } else { %>data:<%- logo.mime %>;base64,<%- logo.content %><% } %>"/></div><% } %>
     <h1><%= title %>
       <% if (unofficial) { %><span class="unofficial">Unofficial</span><% } %>
     </h1>

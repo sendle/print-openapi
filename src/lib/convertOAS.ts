@@ -27,6 +27,7 @@ export interface Logo {
   content: string,
   url: string,
   altText: string,
+  background: string,
 }
 
 export interface Page {
@@ -156,12 +157,16 @@ export async function convertToHTML(
     content: "",
     url: "",
     altText: "logo",
+    background: "",
   };
   
   const xLogo = (doc.getDefinition().info as any)['x-logo'];
   if (xLogo) {
     if (xLogo.altText) {
       logo.altText = xLogo.altText;
+    }
+    if (xLogo.backgroundColor) {
+      logo.background = xLogo.backgroundColor;
     }
     if (xLogo.path) {
       const lookedUpMime = mime.lookup(xLogo.path);
