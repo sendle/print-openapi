@@ -40,7 +40,7 @@ This extension allows arbitrary markdown pages with extra documentation.
 
 `x-pages` can be a property of:
 
-- the root object.
+- [the root object](https://spec.openapis.org/oas/v3.1.0#openapi-object).
 
 ### Page Object
 
