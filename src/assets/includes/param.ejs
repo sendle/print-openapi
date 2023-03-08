@@ -20,14 +20,6 @@
       <div class="value"><%= param.default %></div>
     </div>
     <% } %>
-    <% if (param.enum) { %>
-    <div class="prop">
-      <div class="title">Allowed values</div>
-      <% param.enum.forEach(value => { %>
-      <div class="value mono"><%= value %></div>
-      <% }); %>
-    </div>
-    <% } %>
     <% if (param.minLength) { %>
     <div class="prop">
       <div class="title">Min length</div>
@@ -59,6 +51,16 @@
     </div>
     <% } %>
   </div>
+  <% if (param.enum) { %>
+  <div class="enum">
+    <div class="title">Allowed values</div>
+    <div class="values">
+      <% param.enum.forEach(value => { %>
+      <div class="value"><code><%= value %></code></div>
+      <% }); %>
+    </div>
+  </div>
+  <% } %>
   <% if (param.schema && param.style == 'form' && param.explode) { %>
   <% if (param.schema.oneOf) { %>
   <% param.schema.oneOf.forEach(pr => { %>

@@ -251,8 +251,29 @@ body > .path, body > .x-page {
       > .description p:last-child {
         margin-bottom: 0;
       }
+      > .enum {
+        display: flex;
+        flex-direction: column;
+        margin: 1em 0 0.2em 1em;
+        border: $param-border-color solid 1px;
+        padding: .5em 1em;
+        border-radius: .5em;
+        width: fit-content;
+        max-width: 100%;
+        > .title {
+          font-size: .8em;
+        }
+        > .values {
+          display: flex;
+          flex-wrap: wrap;
+          > .value {
+            margin: .5em .5em 0 0;
+          }
+        }
+      }
       > .props {
         display: flex;
+        flex-wrap: wrap;
         > .prop {
           margin: 1em 0 .2em 1em;
           display: flex;
