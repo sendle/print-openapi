@@ -44,6 +44,8 @@ Create a new OpenAPI file called `sysmsg.openapi.json`. This file only contains 
 
 We've defined the [`x-pages` extension](openapi-extensions.md#x-pages), which lets you define arbitrary markdown pages to be displayed on the exported HTML files. See the bottom of that extension page for our future plans with it!
 
+We support ReadMe-Flavoured Markdown, including their syntax for [Callouts](https://docs.readme.com/rdmd/docs/callouts).
+
 ### Tags
 
 `--tag` and `-t` refer to the tags that can be assigned to [OpenAPI operations](https://spec.openapis.org/oas/v3.1.0#operation-object), and to our custom markdown pages as defined our [`x-pages` extension](openapi-extensions.md#x-pages).
