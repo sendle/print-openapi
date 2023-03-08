@@ -1,6 +1,6 @@
 {
   "name": "print-openapi",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Generate a printable HTML file from your OpenAPI spec.",
   "author": "Daniel Oakley <daniel@danieloaks.net>",
   "repository": "github:sendle/print-openapi",
