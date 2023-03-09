@@ -19,6 +19,8 @@
     <% } %>
     <% } else if (content.schema.type == 'array' && content.schema.items) { %>
     <%- include('param', {name: 'Each entry', param: content.schema.items, required: false, exploded:true, md_to_html}); %>
+    <% } else if (content.schema.type == 'string' && content.schema.format == 'binary') { %>
+    <%- include('param', {name: 'File', param: {type: bodyType}, required: false, exploded:false, md_to_html}); %>
     <% } else { %>
     <div>I don't know what type of body this is.</div>
     <div><%= JSON.stringify(content.schema) %></div>
